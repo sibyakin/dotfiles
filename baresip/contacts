@@ -1,0 +1,6 @@
+"Iptel Echo Server" <sip:echo@iptel.org>
+"Iptel Music Server" <sip:music@iptel.org>
+"OpenSIPs Test Call" <sip:thetestcall@opensips.org>
+"Linphone Test Call" <sip:thetestcall@sip.linphone.org>
+"Good Friend" <sip:good@friend.com>;access=allow
+"Catch All" <sip:*@*>;access=block

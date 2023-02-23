@@ -1,0 +1,24 @@
+sip_listen  0.0.0.0:5080
+rtp_ports   16384-16389
+rtp_timeout 300
+module_path /usr/lib64/baresip/modules
+module      stdio.so
+module      pulse.so
+module      srtp.so
+module      dtls_srtp.so
+module      opus.so
+module      g726.so
+module      g722.so
+module      g711.so
+module      mpa.so
+module      aac.so
+module      codec2.so
+module_app  account.so
+module_app  presence.so
+module_app  mwi.so
+module_app  contact.so
+module_app  menu.so
+
+opus_cbr no
+opus_inbandfec yes
+opus_dtx no

@@ -1,0 +1,2 @@
+# Local dummy account for P2P calls:
+"Alex" <sip:anonymous@invalid>;auth_pass=none;regint=0;pubint=0
