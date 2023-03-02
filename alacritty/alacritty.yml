@@ -35,8 +35,8 @@ colors:
     cyan:     '#33C7DE'
     white:    '#FFFFFF'
 key_bindings:
-  - { key: F7,  action: SearchBackward }
-  - { key: F8,  action: SearchForward }
-  - { key: F11, action: ToggleFullscreen }
+  - { key: F7,  mods: Control, action: SearchBackward }
+  - { key: F8,  mods: Control, action: SearchForward }
+  - { key: F11, mods: Control, action: ToggleFullscreen }
 debug:
   log_level: Off
