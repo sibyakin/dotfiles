@@ -6,8 +6,6 @@ window:
     x: 10
     y: 10
   decorations: none
-scrolling:
-  history: 65535
 font:
   normal:
     family: Cousine Nerd Font Mono
@@ -34,9 +32,5 @@ colors:
     magenta:  '#C061CB'
     cyan:     '#33C7DE'
     white:    '#FFFFFF'
-key_bindings:
-  - { key: F7,  mods: Control, action: SearchBackward }
-  - { key: F8,  mods: Control, action: SearchForward }
-  - { key: F11, mods: Control, action: ToggleFullscreen }
 debug:
   log_level: Off

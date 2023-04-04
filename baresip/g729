@@ -1,0 +1,2 @@
+sudo dnf install bcg729 bcg729-devel
+gcc -I ../re/include/ -I ../baresip/include/ -shared -lbcg729 -o g729.so -fPIC -Ofast g729.c
