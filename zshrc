@@ -26,9 +26,9 @@ export SAVEHIST=65535
 export HISTFILE=$HOME/.zsh_hist
 export GOTELEMETRY=off
 export GOPATH=$HOME/Devel/golang
-if ! [[ "$PATH" =~ "$HOME/bin" ]]
+if ! [[ "$PATH" =~ "$HOME/.bin" ]]
 then
-    PATH="$HOME/bin:$PATH"
+    PATH="$HOME/.bin:$PATH"
 fi
 if ! [[ "$PATH" =~ "$GOPATH/bin" ]]
 then
