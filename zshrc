@@ -1,11 +1,9 @@
 setopt appendhistory completeinword histignorealldups histignorespace nonomatch
 alias vi="nvim"
-alias find="fd"
-alias grep="rg"
+alias vim="nvim"
 alias ll="ls -lha"
 alias lw="tmux lsw"
 alias lt="tmux ls"
-alias t="tmux attach || tmux"
 autoload -Uz compinit
 if [ ! -f "$HOME/.zcompdump" ]; then
     compinit

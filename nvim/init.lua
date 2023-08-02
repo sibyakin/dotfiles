@@ -1,3 +1,5 @@
+vim.cmd('colo tender')
+vim.cmd('command! Q :q')
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
@@ -9,35 +11,29 @@ vim.opt.tabstop = 4
 vim.opt.background = 'dark'
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
-vim.opt.updatetime = 10000
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
+vim.g.loaded_python3_provider = 0
 vim.lsp.set_log_level('off')
 
-local snippy = require('snippy')
-snippy.setup({})
-
-local lsp = require('lspconfig')
-local lsp_utils = require('lspconfig/util')
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_on_attach = function()
-    vim.opt.updatetime = 1000
     vim.diagnostic.config({virtual_text = false})
-    vim.keymap.set('n', 'dw', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-    vim.keymap.set('n', 'ds', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+    vim.keymap.set('n', 'dn', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+    vim.keymap.set('n', 'dp', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
     vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
-    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_type_definitions<CR>')
-    vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_definitions<CR>')
+    vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
+    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
     vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
     vim.api.nvim_create_autocmd('CursorHold', {
-        pattern = {'*.go', '*.rs'},
+        pattern = {'*.go'},
         callback = function()
             vim.diagnostic.open_float(nil, {focus=false})
         end,
     })
     vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = {'*.go', '*.rs'},
+        pattern = {'*.go'},
         callback = function()
             vim.lsp.buf.format({bufnr = bufnr})
         end,
@@ -63,8 +59,11 @@ local gopls_on_attach = function()
         end,
     })
 end
+
+local lsp = require('lspconfig')
+local lsp_utils = require('lspconfig/util')
 lsp.gopls.setup({
-    filetypes = {'go', 'tmpl'},
+    filetypes = {'go', 'tmpl', 'gotmpl'},
     capabilities = lsp_capabilities,
     on_attach = gopls_on_attach,
     root_dir = lsp_utils.root_pattern('go.mod'),
@@ -82,21 +81,9 @@ lsp.gopls.setup({
     },
     single_file_support = true,
 })
-lsp.rust_analyzer.setup({
-    capabilities = lsp_capabilities,
-    on_attach = lsp_on_attach,
-    settings = {
-        ['rust_analyzer'] = {
-            cargo = {
-                allFeatures = true,
-            },
-            checkOnSave = {
-                allFeatures = true,
-                command = 'clippy',
-            },
-        },
-    },
-})
+
+local snippy = require('snippy')
+snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
@@ -135,26 +122,15 @@ cmp.setup({
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'json', 'lua', 'python', 'rust'},
-    sync_install = false,
-    auto_install = false,
+    ensure_installed = {'go', 'json', 'lua', 'python'},
     highlight = {enable = true},
 })
 
 require('nvim-autopairs').setup()
-require('nvim-web-devicons').setup()
-require('lualine').setup({options = {theme = 'gruvbox-material'}})
 
 require('gitsigns').setup({
     numhl = true,
-    watch_gitdir = {
-        interval = 5000,
-    },
     current_line_blame = true,
-    current_line_blame_opts = {
-        delay = 5000,
-        ignore_whitespace = true,
-    },
     current_line_blame_formatter = '<author>: <summary>',
     on_attach = function(bufnr)
         vim.keymap.set('n', 'ga', '<cmd>Gitsigns attach<CR>')
@@ -163,22 +139,13 @@ require('gitsigns').setup({
         vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR>')
         vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR>')
         vim.keymap.set('n', 'gh', '<cmd>Gitsigns preview_hunk_inline<CR>')
+        vim.keymap.set('n', 'fg', '<cmd>Telescope git_commits<CR>')
     end,
 })
 
-local telescope_h = math.min(vim.o.lines, 50)
-local telescope_w = math.min(vim.o.columns, 160)
 require('telescope').setup({
     defaults = {
         layout_strategy = 'vertical',
-        layout_config = {
-            height = telescope_h,
-            width = telescope_w,
-        },
-    },
-    pickers = {
-        diagnostics = {previewer = false, line_width = telescope_w-50},
-        oldfiles = {previewer = false},
     },
     extensions = {
         fzf = {
@@ -197,26 +164,23 @@ vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'FB', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', 'FF', '<cmd>Telescope file_browser<CR>')
-vim.keymap.set('n', 'fg', '<cmd>Telescope git_commits<CR>')
 vim.keymap.set('n', 'fk', '<cmd>Telescope keymaps<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-vim.keymap.set('n', 'FS', '<cmd>Telescope live_grep<CR>')
 
-vim.cmd('colo tender')
-vim.cmd('command! Q :q')
+require('nvim-web-devicons').setup()
+require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-material'}})
 
 require('packer').startup(function(use)
     use {{'nvim-lua/plenary.nvim'},
-        {'dcampos/nvim-snippy'},
-        {'dcampos/cmp-snippy'},
+        {'nvim-lualine/lualine.nvim', requires = 'nvim-tree/nvim-web-devicons'},
         {'neovim/nvim-lspconfig'},
         {'hrsh7th/cmp-nvim-lsp'},
         {'hrsh7th/cmp-nvim-lsp-signature-help'},
+        {'dcampos/nvim-snippy'},
+        {'dcampos/cmp-snippy'},
         {'hrsh7th/nvim-cmp'},
         {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
         {'windwp/nvim-autopairs'},
-        {'nvim-tree/nvim-web-devicons'},
-        {'nvim-lualine/lualine.nvim'},
         {'lewis6991/gitsigns.nvim'},
         {'nvim-telescope/telescope.nvim'},
         {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'},
