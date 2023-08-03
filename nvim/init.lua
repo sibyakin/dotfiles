@@ -147,7 +147,7 @@ require('gitsigns').setup({
 require('telescope').setup({
     defaults = {
         layout_strategy = 'vertical',
-        layout_config = {width = 0.75, height = 0.95, preview_height = 0.65},
+        layout_config = {width = 0.85, height = 0.95, preview_height = 0.65},
     },
     extensions = {
         fzf = {
