@@ -2,8 +2,6 @@ setopt appendhistory completeinword histignorealldups histignorespace nonomatch
 alias vi="nvim"
 alias vim="nvim"
 alias ll="ls -lha"
-alias lw="tmux lsw"
-alias lt="tmux ls"
 autoload -Uz compinit
 if [ ! -f "$HOME/.zcompdump" ]; then
     compinit
@@ -19,20 +17,11 @@ bindkey "^F" forward-word
 bindkey "^[[3~" delete-char
 export PS1="%n@%m%d> "
 export KEYTIMEOUT=1
-export HISTSIZE=65535
-export SAVEHIST=65535
-export HISTFILE=$HOME/.zsh_hist
-export GOTELEMETRY=off
+export HISTSIZE=8184
+export SAVEHIST=8184
+export HISTFILE=$HOME/.history
 export GOPATH=$HOME/Devel/golang
-if ! [[ "$PATH" =~ "$HOME/.bin" ]]
-then
-    PATH="$HOME/.bin:$PATH"
-fi
-if ! [[ "$PATH" =~ "$GOPATH/bin" ]]
-then
-    PATH="$GOPATH/bin:$PATH"
-fi
-export PATH
+export PATH="$HOME/.bin:$GOPATH/bin:$PATH"
 zstyle ':completion:*' file-list all
 zstyle ':completion:*' menu select=long
 zstyle ':completion:*' completer _expand _complete _approximate
