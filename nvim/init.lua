@@ -149,6 +149,7 @@ require('telescope').setup({
         layout_strategy = 'vertical',
         layout_config = {width = 0.85, height = 0.95, preview_height = 0.65},
     },
+    pickers = {diagnostics = {line_width = 0.65}},
     extensions = {
         fzf = {
             fuzzy = true,
