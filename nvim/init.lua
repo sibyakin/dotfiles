@@ -72,7 +72,6 @@ lsp.gopls.setup({
     settings = {
         gopls = {
             analyses = {
-                fieldalignment = true,
                 nilness = true,
                 shadow = true,
                 unusedparams = true,
@@ -174,21 +173,22 @@ vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 require('nvim-web-devicons').setup()
 require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-material'}})
 
-require('packer').startup(function(use)
-    use {{'nvim-lua/plenary.nvim'},
-        {'nvim-lualine/lualine.nvim', requires = 'nvim-tree/nvim-web-devicons'},
-        {'neovim/nvim-lspconfig'},
-        {'hrsh7th/cmp-nvim-lsp'},
-        {'hrsh7th/cmp-nvim-lsp-signature-help'},
-        {'dcampos/nvim-snippy'},
-        {'dcampos/cmp-snippy'},
-        {'hrsh7th/nvim-cmp'},
-        {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
-        {'windwp/nvim-autopairs'},
-        {'lewis6991/gitsigns.nvim'},
-        {'nvim-telescope/telescope.nvim'},
-        {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'},
-        {'nvim-telescope/telescope-file-browser.nvim'},
-        {'jacoborus/tender.vim'},
-        {'wbthomason/packer.nvim'}}
-end)
+require('paq')({
+    'nvim-lua/plenary.nvim',
+    'nvim-tree/nvim-web-devicons',
+    'nvim-lualine/lualine.nvim',
+    'neovim/nvim-lspconfig',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
+    'dcampos/nvim-snippy',
+    'dcampos/cmp-snippy',
+    'hrsh7th/nvim-cmp',
+    {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
+    'windwp/nvim-autopairs',
+    'lewis6991/gitsigns.nvim',
+    'nvim-telescope/telescope.nvim',
+    {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'},
+    'nvim-telescope/telescope-file-browser.nvim',
+    'jacoborus/tender.vim',
+    'savq/paq-nvim',
+})
