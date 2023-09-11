@@ -1,5 +1,3 @@
-vim.cmd('colo tender')
-vim.cmd('command! Q :q')
 vim.opt.cmdheight = 0
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
@@ -16,7 +14,8 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_python3_provider = 0
-vim.lsp.set_log_level('off')
+vim.cmd('colo tender')
+vim.cmd('command! Q :q')
 
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_on_attach = function()
