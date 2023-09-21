@@ -19,7 +19,7 @@ vim.cmd('command! Q :q')
 
 local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_on_attach = function()
-    vim.opt.updatetime = 250
+    vim.opt.updatetime = 750
     vim.diagnostic.config({virtual_text = false})
     vim.keymap.set('n', 'dn', '<cmd>lua vim.diagnostic.goto_next()<CR>')
     vim.keymap.set('n', 'dp', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
