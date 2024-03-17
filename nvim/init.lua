@@ -174,7 +174,7 @@ require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-mate
 
 require('paq')({
     'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons',
+    {'nvim-tree/nvim-web-devicons', pin = true},
     'nvim-lualine/lualine.nvim',
     'neovim/nvim-lspconfig',
     'hrsh7th/cmp-nvim-lsp',
@@ -182,11 +182,11 @@ require('paq')({
     'dcampos/nvim-snippy',
     'dcampos/cmp-snippy',
     'hrsh7th/nvim-cmp',
-    {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     'windwp/nvim-autopairs',
     'lewis6991/gitsigns.nvim',
     'nvim-telescope/telescope.nvim',
-    {'nvim-telescope/telescope-fzf-native.nvim', run = 'make'},
+    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     'nvim-telescope/telescope-file-browser.nvim',
     'jacoborus/tender.vim',
     'savq/paq-nvim',
