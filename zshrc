@@ -1,4 +1,4 @@
-setopt appendhistory completeinword histignorealldups histignorespace nonomatch
+setopt appendhistory completeinword histignorespace nonomatch
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
@@ -15,8 +15,9 @@ export SAVEHIST=5000
 export HISTFILE=$HOME/.history
 export GOPATH=$HOME/Devel/golang
 export PATH="$GOPATH/bin:$HOME/.bin:$PATH"
-zstyle ':completion:*' max-errors 2
 zstyle ':completion:*' file-list all
-zstyle ':completion:*' menu select=long
+zstyle ':completion:*' menu select=3
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' completer _complete _correct _approximate _history
+zstyle ':completion:*' completer _complete _correct _approximate
+zstyle ':completion:*:correct:*' max-errors 2 not-numeric
+zstyle ':completion:*:approximate:*' max-errors 3 numeric
