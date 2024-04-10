@@ -1,15 +1,9 @@
 [shell]
 program = "/usr/bin/tmux"
 
-[colors.bright]
-black = "#5E5C64"
-blue = "#2A7BDE"
-cyan = "#33C7DE"
-green = "#33D17A"
-magenta = "#C061CB"
-red = "#F66151"
-white = "#FFFFFF"
-yellow = "#E9AD0C"
+[colors.primary]
+background = "#2E3436"
+foreground = "#D3D7CF"
 
 [colors.normal]
 black = "#171421"
@@ -21,27 +15,22 @@ red = "#C01C28"
 white = "#D0CFCC"
 yellow = "#A2734C"
 
-[colors.primary]
-background = "#2E3436"
-foreground = "#D3D7CF"
-
-[debug]
-log_level = "Off"
-
 [font]
-size = 16.5
+size = 12.0
 
 [font.normal]
 family = "Cousine Nerd Font"
 
+[scrolling]
+history = 100
+
 [window]
-decorations = "none"
-startup_mode = "Maximized"
+decorations_theme_variant = "Dark"
 
 [window.dimensions]
-columns = 144
-lines = 44
+columns = 150
+lines = 46
 
 [window.padding]
-x = 5
-y = 5
+x = 4
+y = 4
