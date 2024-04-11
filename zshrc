@@ -18,6 +18,5 @@ export PATH="$GOPATH/bin:$HOME/.bin:$PATH"
 zstyle ':completion:*' file-list all
 zstyle ':completion:*' menu select=3
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' completer _complete _correct _approximate
-zstyle ':completion:*:correct:*' max-errors 2 not-numeric
-zstyle ':completion:*:approximate:*' max-errors 3 numeric
+zstyle ':completion:*' completer _complete _approximate
+zstyle ':completion:*' max-errors 3 numeric
