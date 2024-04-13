@@ -1,3 +1,22 @@
+require('paq')({
+    {'savq/paq-nvim'},
+    {'nvim-lua/plenary.nvim'},
+    {'nvim-tree/nvim-web-devicons', pin = true},
+    {'nvim-lualine/lualine.nvim'},
+    {'neovim/nvim-lspconfig'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'dcampos/nvim-snippy'},
+    {'dcampos/cmp-snippy'},
+    {'hrsh7th/nvim-cmp'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'windwp/nvim-autopairs'},
+    {'lewis6991/gitsigns.nvim'},
+    {'nvim-telescope/telescope.nvim'},
+    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+    {'nvim-telescope/telescope-file-browser.nvim'},
+    {'jacoborus/tender.vim'},
+})
+
 vim.opt.cmdheight = 0
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
@@ -14,10 +33,10 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_python3_provider = 0
+vim.lsp.set_log_level(vim.log.levels.OFF)
 vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
-local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_on_attach = function()
     vim.opt.updatetime = 750
     vim.diagnostic.config({virtual_text = false})
@@ -27,23 +46,12 @@ local lsp_on_attach = function()
     vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
     vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
     vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
-    vim.api.nvim_create_autocmd('CursorHold', {
-        pattern = {'*.go'},
-        callback = function()
-            vim.diagnostic.open_float(nil, {focus=false})
-        end,
-    })
-    vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = {'*.go'},
-        callback = function()
-            vim.lsp.buf.format({bufnr = bufnr})
-        end,
-    })
 end
+
 local gopls_on_attach = function()
     lsp_on_attach()
     vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = {'*.go'},
+        pattern = {'*.go', '*.tmpl', '*.gotmpl'},
         callback = function()
             local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
             params.context = {only = {'source.organizeImports'}}
@@ -59,10 +67,23 @@ local gopls_on_attach = function()
             end
         end,
     })
+    vim.api.nvim_create_autocmd('BufWritePre', {
+        pattern = {'*.go', '*.tmpl', '*.gotmpl'},
+        callback = function()
+            vim.lsp.buf.format({bufnr = bufnr})
+        end,
+    })
+    vim.api.nvim_create_autocmd('CursorHold', {
+        pattern = {'*.go', '*.tmpl', '*.gotmpl'},
+        callback = function()
+            vim.diagnostic.open_float(nil, {focus=false})
+        end,
+    })
 end
 
 local lsp = require('lspconfig')
 local lsp_utils = require('lspconfig/util')
+local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 lsp.gopls.setup({
     filetypes = {'go', 'tmpl', 'gotmpl'},
     capabilities = lsp_capabilities,
@@ -71,9 +92,9 @@ lsp.gopls.setup({
     settings = {
         gopls = {
             analyses = {
-                nilness = true,
+                fieldalignment = true,
                 shadow = true,
-                unusedparams = true,
+                unusedvariable = true,
                 unusedwrite = true,
                 useany = true,
             },
@@ -117,7 +138,6 @@ cmp.setup({
     sources = {
         {name = 'snippy'},
         {name = 'nvim_lsp'},
-        {name = 'nvim_lsp_signature_help'}
     },
 })
 
@@ -171,23 +191,3 @@ vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 
 require('nvim-web-devicons').setup()
 require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-material'}})
-
-require('paq')({
-    'nvim-lua/plenary.nvim',
-    {'nvim-tree/nvim-web-devicons', pin = true},
-    'nvim-lualine/lualine.nvim',
-    'neovim/nvim-lspconfig',
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-nvim-lsp-signature-help',
-    'dcampos/nvim-snippy',
-    'dcampos/cmp-snippy',
-    'hrsh7th/nvim-cmp',
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    'windwp/nvim-autopairs',
-    'lewis6991/gitsigns.nvim',
-    'nvim-telescope/telescope.nvim',
-    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    'nvim-telescope/telescope-file-browser.nvim',
-    'jacoborus/tender.vim',
-    'savq/paq-nvim',
-})
