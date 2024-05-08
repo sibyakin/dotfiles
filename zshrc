@@ -10,8 +10,8 @@ alias vi="nvim"
 bindkey "^[[3~" delete-char
 export PS1="%n@%m%d> "
 export EDITOR=nvim
-export HISTSIZE=5000
-export SAVEHIST=5000
+export HISTSIZE=10000
+export SAVEHIST=10000
 export HISTFILE=$HOME/.history
 export GOPATH=$HOME/Devel/golang
 export PATH="$GOPATH/bin:$HOME/.bin:$PATH"

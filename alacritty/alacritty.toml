@@ -1,36 +1,24 @@
+import = [
+    "~/.config/alacritty/colorscheme.toml"
+]
+
 [shell]
 program = "/usr/bin/tmux"
 
-[colors.primary]
-background = "#2E3436"
-foreground = "#D3D7CF"
-
-[colors.normal]
-black = "#171421"
-blue = "#12488B"
-cyan = "#2AA1B3"
-green = "#26A269"
-magenta = "#A347BA"
-red = "#C01C28"
-white = "#D0CFCC"
-yellow = "#A2734C"
-
 [font]
-size = 12.0
+size = 16.5
 
 [font.normal]
 family = "Cousine Nerd Font"
 
-[scrolling]
-history = 100
-
 [window]
-decorations_theme_variant = "Dark"
+decorations = "None"
+startup_mode = "Maximized"
 
 [window.dimensions]
-columns = 150
-lines = 46
+columns = 144
+lines = 44
 
 [window.padding]
-x = 4
-y = 4
+x = 2
+y = 3
