@@ -123,7 +123,7 @@ cmp.setup({
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'json', 'lua', 'python'},
+    ensure_installed = {'go', 'gomod'},
     highlight = {enable = true},
 })
 
@@ -183,7 +183,7 @@ require('paq')({
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
     {'hrsh7th/nvim-cmp'},
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdateSync'},
     {'windwp/nvim-autopairs'},
     {'lewis6991/gitsigns.nvim'},
     {'nvim-telescope/telescope.nvim'},
