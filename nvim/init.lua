@@ -14,7 +14,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.g.loaded_python3_provider = 0
-vim.lsp.set_log_level(vim.log.levels.OFF)
+vim.lsp.set_log_level(vim.log.levels.WARN)
 vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
@@ -82,6 +82,11 @@ lsp.gopls.setup({
         },
     },
     single_file_support = true,
+})
+lsp.golangci_lint_ls.setup({
+    init_options = {
+        command = {'golangci-lint', 'run', '--enable-all', '--out-format', 'json'},
+    }
 })
 
 local snippy = require('snippy')
@@ -179,6 +184,7 @@ require('paq')({
     {'nvim-tree/nvim-web-devicons', pin = true},
     {'nvim-lualine/lualine.nvim'},
     {'neovim/nvim-lspconfig'},
+    {'nametake/golangci-lint-langserver'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
