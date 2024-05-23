@@ -73,7 +73,6 @@ lsp.gopls.setup({
     settings = {
         gopls = {
             analyses = {
-                fieldalignment = true,
                 shadow = true,
                 unusedvariable = true,
                 unusedwrite = true,
@@ -84,9 +83,12 @@ lsp.gopls.setup({
     single_file_support = true,
 })
 lsp.golangci_lint_ls.setup({
+    cmd = { 'golangci-lint-langserver', '-nolintername' },
+    filetypes = {'go', 'tmpl', 'gotmpl'},
     init_options = {
-        command = {'golangci-lint', 'run', '--enable-all', '--out-format', 'json'},
-    }
+        command = {'golangci-lint', 'run', '-p', 'bugs', '-E', 'gosimple', '-E', 'ineffassign', '--out-format', 'json'},
+    },
+    root_dir = lsp_utils.root_pattern('go.mod'),
 })
 
 local snippy = require('snippy')
