@@ -1,4 +1,4 @@
-setopt appendhistory completeinword histignorespace nonomatch
+setopt appendhistory completeinword histignorealldups histignorespace nonomatch
 autoload -Uz compinit
 for dump in ~/.zcompdump(N.mh+24); do
   compinit
