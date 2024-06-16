@@ -83,8 +83,7 @@ lsp.gopls.setup({
     single_file_support = true,
 })
 lsp.golangci_lint_ls.setup({
-    --cmd = { 'golangci-lint-langserver', '-nolintername' },
-    cmd = { 'golangci-lint-langserver'},
+    cmd = { 'golangci-lint-langserver', '-nolintername' },
     filetypes = {'go', 'tmpl', 'gotmpl'},
     init_options = {
         command = {'golangci-lint', 'run', '-D', 'staticcheck', '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl', '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert', '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange', '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc', '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert', '-E', 'usestdlibvars', '-E', 'wastedassign', '-E', 'wrapcheck', '--out-format', 'json'},
@@ -131,7 +130,7 @@ cmp.setup({
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'gomod'},
+    ensure_installed = {'go', 'gomod', 'lua'},
     highlight = {enable = true},
 })
 
