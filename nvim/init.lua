@@ -32,7 +32,7 @@ end
 local gopls_on_attach = function()
     lsp_on_attach()
     vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = {'*.go', '*.tmpl', '*.gotmpl'},
+        pattern = {'*.go'},
         callback = function()
             local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
             params.context = {only = {'source.organizeImports'}}
@@ -49,13 +49,13 @@ local gopls_on_attach = function()
         end,
     })
     vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = {'*.go', '*.tmpl', '*.gotmpl'},
+        pattern = {'*.go'},
         callback = function()
             vim.lsp.buf.format({bufnr = bufnr})
         end,
     })
     vim.api.nvim_create_autocmd('CursorHold', {
-        pattern = {'*.go', '*.tmpl', '*.gotmpl'},
+        pattern = {'*.go'},
         callback = function()
             vim.diagnostic.open_float(nil, {focus=false})
         end,
@@ -63,32 +63,14 @@ local gopls_on_attach = function()
 end
 
 local lsp = require('lspconfig')
-local lsp_utils = require('lspconfig/util')
-local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
 lsp.gopls.setup({
-    filetypes = {'go', 'tmpl', 'gotmpl'},
-    capabilities = lsp_capabilities,
     on_attach = gopls_on_attach,
-    root_dir = lsp_utils.root_pattern('go.mod'),
-    settings = {
-        gopls = {
-            analyses = {
-                shadow = true,
-                unusedvariable = true,
-                unusedwrite = true,
-                useany = true,
-            },
-        },
-    },
-    single_file_support = true,
 })
 lsp.golangci_lint_ls.setup({
     cmd = { 'golangci-lint-langserver', '-nolintername' },
-    filetypes = {'go', 'tmpl', 'gotmpl'},
     init_options = {
-        command = {'golangci-lint', 'run', '-D', 'staticcheck', '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl', '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert', '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange', '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc', '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert', '-E', 'usestdlibvars', '-E', 'wastedassign', '-E', 'wrapcheck', '--out-format', 'json'},
+        command = {'golangci-lint', 'run', '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl', '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert', '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange', '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc', '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert', '-E', 'usestdlibvars', '-E', 'wastedassign', '-E', 'wrapcheck', '--out-format', 'json'},
     },
-    root_dir = lsp_utils.root_pattern('go.mod'),
 })
 
 local snippy = require('snippy')
