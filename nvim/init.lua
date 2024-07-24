@@ -112,7 +112,7 @@ cmp.setup({
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'gomod', 'lua'},
+    ensure_installed = {'vim', 'vimdoc', 'lua', 'go', 'gomod'},
     highlight = {enable = true},
 })
 
