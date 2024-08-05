@@ -69,7 +69,7 @@ lsp.gopls.setup({
 lsp.golangci_lint_ls.setup({
     cmd = { 'golangci-lint-langserver', '-nolintername' },
     init_options = {
-        command = {'golangci-lint', 'run', '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl', '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert', '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange', '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc', '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert', '-E', 'usestdlibvars', '-E', 'wastedassign', '--out-format', 'json'},
+        command = {'golangci-lint', 'run', '--no-config', '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl', '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert', '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange', '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc', '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert', '-E', 'usestdlibvars', '-E', 'wastedassign', '--out-format', 'json'},
     },
 })
 
