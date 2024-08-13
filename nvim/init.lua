@@ -10,6 +10,7 @@ vim.opt.tabstop = 4
 vim.opt.background = 'dark'
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
+vim.opt.updatetime = 1000
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
@@ -19,8 +20,8 @@ vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
 local lsp_on_attach = function()
-    vim.opt.updatetime = 750
     vim.diagnostic.config({virtual_text = false})
+    vim.keymap.set('n', 'bf', '<cmd>lua vim.lsp.buf.format({bufnr = bufnr})<CR>')
     vim.keymap.set('n', 'dn', '<cmd>lua vim.diagnostic.goto_next()<CR>')
     vim.keymap.set('n', 'dp', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
     vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
@@ -46,12 +47,6 @@ local gopls_on_attach = function()
                     end
                 end
             end
-        end,
-    })
-    vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = {'*.go'},
-        callback = function()
-            vim.lsp.buf.format({bufnr = bufnr})
         end,
     })
     vim.api.nvim_create_autocmd('CursorHold', {
