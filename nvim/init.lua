@@ -49,7 +49,7 @@ local gopls_on_attach = function()
     vim.api.nvim_create_autocmd('CursorHold', {
         pattern = {'*.go'},
         callback = function()
-            vim.diagnostic.open_float()
+            vim.diagnostic.open_float(nil, {focus=false, scope='line'})
         end,
     })
 end
