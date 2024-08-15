@@ -20,7 +20,7 @@ vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
 local lsp_on_attach = function()
-    vim.diagnostic.config({virtual_text = false, underline = true})
+    vim.diagnostic.config({signs = false, virtual_text = false, underline = true})
     vim.keymap.set('n', 'bf', '<cmd>lua vim.lsp.buf.format({bufnr = bufnr})<CR>')
     vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
     vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_type_definitions<CR>')
