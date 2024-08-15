@@ -20,13 +20,10 @@ vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
 local lsp_on_attach = function()
-    vim.diagnostic.config({virtual_text = false})
+    vim.diagnostic.config({virtual_text = false, underline = true})
     vim.keymap.set('n', 'bf', '<cmd>lua vim.lsp.buf.format({bufnr = bufnr})<CR>')
-    vim.keymap.set('n', 'dn', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-    vim.keymap.set('n', 'dp', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
     vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
-    vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
-    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
+    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_type_definitions<CR>')
     vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
 end
 
@@ -35,24 +32,24 @@ local gopls_on_attach = function()
     vim.api.nvim_create_autocmd('BufWritePre', {
         pattern = {'*.go'},
         callback = function()
-            local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
+            local params = vim.lsp.util.make_range_params()
             params.context = {only = {'source.organizeImports'}}
-            local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, 1000)
-            for _, res in pairs(result or {}) do
+            local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params)
+            for cid, res in pairs(result or {}) do
                 for _, r in pairs(res.result or {}) do
                     if r.edit then
-                        vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
-                    else
-                        vim.lsp.buf.execute_command(r.command)
+                        local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or 'utf-16'
+                        vim.lsp.util.apply_workspace_edit(r.edit, enc)
                     end
                 end
             end
-        end,
+            vim.lsp.buf.format({async = false})
+        end
     })
     vim.api.nvim_create_autocmd('CursorHold', {
         pattern = {'*.go'},
         callback = function()
-            vim.diagnostic.open_float(nil, {focus=false})
+            vim.diagnostic.open_float()
         end,
     })
 end
@@ -116,11 +113,7 @@ require('nvim-autopairs').setup()
 require('gitsigns').setup({
     numhl = true,
     current_line_blame = true,
-    current_line_blame_formatter = '<author>: <summary>',
     on_attach = function(bufnr)
-        vim.keymap.set('n', 'ga', '<cmd>Gitsigns attach<CR>')
-        vim.keymap.set('n', 'gd', '<cmd>Gitsigns detach<CR>')
-        vim.keymap.set('n', 'gr', '<cmd>Gitsigns refresh<CR>')
         vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR>')
         vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR>')
         vim.keymap.set('n', 'gh', '<cmd>Gitsigns preview_hunk_inline<CR>')
@@ -151,7 +144,6 @@ vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'FB', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', 'FF', '<cmd>Telescope file_browser<CR>')
-vim.keymap.set('n', 'fk', '<cmd>Telescope keymaps<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 
 require('nvim-web-devicons').setup()
@@ -160,7 +152,7 @@ require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-mate
 require('paq')({
     {'savq/paq-nvim'},
     {'nvim-lua/plenary.nvim'},
-    {'nvim-tree/nvim-web-devicons', pin = true},
+    {'nvim-tree/nvim-web-devicons'},
     {'nvim-lualine/lualine.nvim'},
     {'neovim/nvim-lspconfig'},
     {'nametake/golangci-lint-langserver'},
