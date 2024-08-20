@@ -2,15 +2,11 @@ vim.opt.cmdheight = 0
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
-vim.opt.showmode = false
-vim.opt.termguicolors = true
 vim.opt.undofile = true
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
-vim.opt.background = 'dark'
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
-vim.opt.updatetime = 1000
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
@@ -21,10 +17,13 @@ vim.cmd('command! Q :q')
 
 local lsp_on_attach = function()
     vim.diagnostic.config({signs = false, virtual_text = false, underline = true})
-    vim.keymap.set('n', 'bf', '<cmd>lua vim.lsp.buf.format({bufnr = bufnr})<CR>')
+    vim.keymap.set('n', 'xw', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+    vim.keymap.set('n', 'xs', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
     vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
-    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_type_definitions<CR>')
+    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
+    vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
     vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
+    vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
 end
 
 local gopls_on_attach = function()
@@ -76,7 +75,7 @@ cmp.setup({
         end,
     },
     mapping = cmp.mapping.preset.insert({
-        ['<C-w>'] = cmp.mapping(function(fallback)
+        ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
             elseif snippy.can_expand_or_advance() then
@@ -85,17 +84,7 @@ cmp.setup({
                 fallback()
             end
         end, {'i', 's'}),
-        ['<C-s>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif snippy.can_jump(-1) then
-                snippy.previous()
-            else
-                fallback()
-            end
-        end, {'i', 's'}),
         ['<C-d>'] = cmp.mapping.confirm({select = true}),
-        ['<CR>'] = cmp.mapping.confirm({select = false}),
     }),
     sources = {
         {name = 'snippy'},
@@ -124,26 +113,16 @@ require('gitsigns').setup({
 require('telescope').setup({
     defaults = {
         layout_strategy = 'vertical',
-        layout_config = {width = 0.85, height = 0.95, preview_height = 0.65},
+        layout_config = {width = 0.90, height = 0.95, preview_height = 0.50},
     },
-    pickers = {diagnostics = {line_width = 0.65}},
-    extensions = {
-        fzf = {
-            fuzzy = true,
-            override_generic_sorter = true,
-            override_file_sorter = true,
-            case_mode = 'ignore_case',
-        },
-        file_browser = {hijack_netwrw = true}},
+    pickers = {diagnostics = {line_width = 0.60}},
 })
 require('telescope').load_extension('fzf')
-require('telescope').load_extension('file_browser')
 vim.keymap.set('n', 'fc', '<cmd>Telescope command_history<CR>')
 vim.keymap.set('n', 'FC', '<cmd>Telescope commands<CR>')
 vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'FB', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
-vim.keymap.set('n', 'FF', '<cmd>Telescope file_browser<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 
 require('nvim-web-devicons').setup()
@@ -155,17 +134,15 @@ require('paq')({
     {'nvim-tree/nvim-web-devicons'},
     {'nvim-lualine/lualine.nvim'},
     {'neovim/nvim-lspconfig'},
-    {'nametake/golangci-lint-langserver'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
     {'hrsh7th/nvim-cmp'},
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdateSync'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {'windwp/nvim-autopairs'},
     {'lewis6991/gitsigns.nvim'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'nvim-telescope/telescope-file-browser.nvim'},
     {'jacoborus/tender.vim'},
 })
 
