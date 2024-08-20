@@ -15,6 +15,24 @@ vim.lsp.set_log_level(vim.log.levels.WARN)
 vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
+require('paq')({
+    {'savq/paq-nvim'},
+    {'nvim-lua/plenary.nvim'},
+    {'nvim-tree/nvim-web-devicons'},
+    {'nvim-lualine/lualine.nvim'},
+    {'neovim/nvim-lspconfig'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'dcampos/nvim-snippy'},
+    {'dcampos/cmp-snippy'},
+    {'hrsh7th/nvim-cmp'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'windwp/nvim-autopairs'},
+    {'lewis6991/gitsigns.nvim'},
+    {'nvim-telescope/telescope.nvim'},
+    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+    {'jacoborus/tender.vim'},
+})
+
 local lsp_on_attach = function()
     vim.diagnostic.config({signs = false, virtual_text = false, underline = true})
     vim.keymap.set('n', 'xw', '<cmd>lua vim.diagnostic.goto_next()<CR>')
@@ -60,8 +78,15 @@ lsp.gopls.setup({
 lsp.golangci_lint_ls.setup({
     cmd = { 'golangci-lint-langserver', '-nolintername' },
     init_options = {
-        command = {'golangci-lint', 'run', '--no-config', '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl', '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert', '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange', '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc', '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert', '-E', 'usestdlibvars', '-E', 'wastedassign', '--out-format', 'json'},
-    },
+        command = {'golangci-lint', 'run', '--no-config', '--out-format', 'json',
+        '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl',
+        '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert',
+        '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange',
+        '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc',
+        '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert',
+        '-E', 'usestdlibvars', '-E', 'wastedassign',
+        },
+    }
 })
 
 local snippy = require('snippy')
@@ -127,22 +152,4 @@ vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 
 require('nvim-web-devicons').setup()
 require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-material'}})
-
-require('paq')({
-    {'savq/paq-nvim'},
-    {'nvim-lua/plenary.nvim'},
-    {'nvim-tree/nvim-web-devicons'},
-    {'nvim-lualine/lualine.nvim'},
-    {'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-nvim-lsp'},
-    {'dcampos/nvim-snippy'},
-    {'dcampos/cmp-snippy'},
-    {'hrsh7th/nvim-cmp'},
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    {'windwp/nvim-autopairs'},
-    {'lewis6991/gitsigns.nvim'},
-    {'nvim-telescope/telescope.nvim'},
-    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'jacoborus/tender.vim'},
-})
 
