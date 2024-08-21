@@ -7,6 +7,7 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
+vim.opt.updatetime = 500
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
@@ -16,9 +17,7 @@ vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
 local lsp_on_attach = function()
-    vim.diagnostic.config({signs = false, virtual_text = false, underline = true})
-    vim.keymap.set('n', 'xw', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-    vim.keymap.set('n', 'xs', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+    vim.diagnostic.config({signs = false, virtual_text = false, underline = false})
     vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
     vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
     vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
@@ -26,49 +25,34 @@ local lsp_on_attach = function()
     vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
 end
 
-local gopls_on_attach = function()
-    lsp_on_attach()
-    vim.api.nvim_create_autocmd('BufWritePre', {
-        pattern = {'*.go'},
-        callback = function()
-            local params = vim.lsp.util.make_range_params()
-            params.context = {only = {'source.organizeImports'}}
-            local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params)
-            for cid, res in pairs(result or {}) do
-                for _, r in pairs(res.result or {}) do
-                    if r.edit then
-                        local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or 'utf-16'
-                        vim.lsp.util.apply_workspace_edit(r.edit, enc)
-                    end
-                end
-            end
-            vim.lsp.buf.format({async = false})
-        end
-    })
-    vim.api.nvim_create_autocmd('CursorHold', {
-        pattern = {'*.go'},
-        callback = function()
-            vim.diagnostic.open_float(nil, {focus=false, scope='line'})
-        end,
-    })
-end
-
 local lsp = require('lspconfig')
 lsp.gopls.setup({
-    on_attach = gopls_on_attach,
-})
-lsp.golangci_lint_ls.setup({
-    cmd = { 'golangci-lint-langserver', '-nolintername' },
-    init_options = {
-        command = {'golangci-lint', 'run', '--no-config', '--out-format', 'json',
-        '-E', 'bidichk', '-E', 'bodyclose', '-E', 'decorder', '-E', 'dupl',
-        '-E', 'dupword', '-E', 'errname', '-E', 'errorlint', '-E', 'forcetypeassert',
-        '-E', 'goconst', '-E', 'godox', '-E', 'goprintffuncname', '-E', 'intrange',
-        '-E', 'nilerr', '-E', 'nilnil', '-E', 'perfsprint', '-E', 'prealloc',
-        '-E', 'predeclared', '-E', 'sloglint', '-E', 'sqlclosecheck', '-E', 'unconvert',
-        '-E', 'usestdlibvars', '-E', 'wastedassign',
-        },
-    }
+    on_attach =  function()
+        lsp_on_attach()
+        vim.api.nvim_create_autocmd('BufWritePre', {
+            pattern = {'*.go'},
+            callback = function()
+                local params = vim.lsp.util.make_range_params()
+                params.context = {only = {'source.organizeImports'}}
+                local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params)
+                for cid, res in pairs(result or {}) do
+                    for _, r in pairs(res.result or {}) do
+                        if r.edit then
+                            local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or 'utf-16'
+                            vim.lsp.util.apply_workspace_edit(r.edit, enc)
+                        end
+                    end
+                end
+                vim.lsp.buf.format({async = false})
+            end
+        })
+        vim.api.nvim_create_autocmd('CursorHold', {
+            pattern = {'*.go'},
+            callback = function()
+                vim.diagnostic.open_float(nil, {focus=false, scope='line'})
+            end,
+        })
+    end
 })
 
 local snippy = require('snippy')
@@ -105,7 +89,14 @@ require('nvim-treesitter.configs').setup({
 })
 require('nvim-web-devicons').setup()
 require('nvim-autopairs').setup()
-require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-material'}})
+require('lualine').setup({
+    options = {theme = 'gruvbox-material'},
+    sections = {
+        lualine_b = {'branch', 'diff', {'diagnostics', sources = {'nvim_workspace_diagnostic'}}},
+        lualine_c = {{'filename', path = 1, shorting_target = 100}},
+        lualine_x = {'filetype'},
+    },
+})
 
 local telescope = require('telescope')
 telescope.setup({
