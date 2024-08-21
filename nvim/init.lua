@@ -15,24 +15,6 @@ vim.lsp.set_log_level(vim.log.levels.WARN)
 vim.cmd('colo tender')
 vim.cmd('command! Q :q')
 
-require('paq')({
-    {'savq/paq-nvim'},
-    {'nvim-lua/plenary.nvim'},
-    {'nvim-tree/nvim-web-devicons'},
-    {'nvim-lualine/lualine.nvim'},
-    {'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-nvim-lsp'},
-    {'dcampos/nvim-snippy'},
-    {'dcampos/cmp-snippy'},
-    {'hrsh7th/nvim-cmp'},
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    {'windwp/nvim-autopairs'},
-    {'lewis6991/gitsigns.nvim'},
-    {'nvim-telescope/telescope.nvim'},
-    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'jacoborus/tender.vim'},
-})
-
 local lsp_on_attach = function()
     vim.diagnostic.config({signs = false, virtual_text = false, underline = true})
     vim.keymap.set('n', 'xw', '<cmd>lua vim.diagnostic.goto_next()<CR>')
@@ -121,8 +103,20 @@ require('nvim-treesitter.configs').setup({
     ensure_installed = {'vim', 'vimdoc', 'lua', 'go', 'gomod'},
     highlight = {enable = true},
 })
-
+require('nvim-web-devicons').setup()
 require('nvim-autopairs').setup()
+require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-material'}})
+
+local telescope = require('telescope')
+telescope.setup({
+    defaults = {preview = false},
+    pickers = {diagnostics = {line_width = 0.60}},
+})
+telescope.load_extension('fzf')
+vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
+vim.keymap.set('n', 'FB', '<cmd>Telescope oldfiles<CR>')
+vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
+vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 
 require('gitsigns').setup({
     numhl = true,
@@ -135,21 +129,20 @@ require('gitsigns').setup({
     end,
 })
 
-require('telescope').setup({
-    defaults = {
-        layout_strategy = 'vertical',
-        layout_config = {width = 0.90, height = 0.95, preview_height = 0.50},
-    },
-    pickers = {diagnostics = {line_width = 0.60}},
+require('paq')({
+    {'savq/paq-nvim'},
+    {'nvim-lua/plenary.nvim'},
+    {'nvim-tree/nvim-web-devicons'},
+    {'nvim-lualine/lualine.nvim'},
+    {'neovim/nvim-lspconfig'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'dcampos/nvim-snippy'},
+    {'dcampos/cmp-snippy'},
+    {'hrsh7th/nvim-cmp'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'windwp/nvim-autopairs'},
+    {'lewis6991/gitsigns.nvim'},
+    {'nvim-telescope/telescope.nvim'},
+    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+    {'jacoborus/tender.vim'},
 })
-require('telescope').load_extension('fzf')
-vim.keymap.set('n', 'fc', '<cmd>Telescope command_history<CR>')
-vim.keymap.set('n', 'FC', '<cmd>Telescope commands<CR>')
-vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
-vim.keymap.set('n', 'FB', '<cmd>Telescope oldfiles<CR>')
-vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
-vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-
-require('nvim-web-devicons').setup()
-require('lualine').setup({options = {icons_enabled = true, theme = 'gruvbox-material'}})
-
