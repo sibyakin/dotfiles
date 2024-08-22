@@ -100,7 +100,6 @@ require('lualine').setup({
     },
 })
 
-
 local telescope = require('telescope')
 telescope.setup({
     defaults = {preview = false},
@@ -108,7 +107,7 @@ telescope.setup({
 })
 telescope.load_extension('fzf')
 vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
-vim.keymap.set('n', 'FB', '<cmd>Telescope oldfiles<CR>')
+vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 
