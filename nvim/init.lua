@@ -80,6 +80,7 @@ cmp.setup({
     sources = {
         {name = 'snippy'},
         {name = 'nvim_lsp'},
+        {name = 'nvim_lsp_signature_help'},
     },
 })
 
@@ -89,6 +90,7 @@ require('nvim-treesitter.configs').setup({
 })
 require('nvim-web-devicons').setup()
 require('nvim-autopairs').setup()
+
 require('lualine').setup({
     options = {theme = 'gruvbox-material'},
     sections = {
@@ -97,6 +99,7 @@ require('lualine').setup({
         lualine_x = {'filetype'},
     },
 })
+
 
 local telescope = require('telescope')
 telescope.setup({
@@ -127,6 +130,7 @@ require('paq')({
     {'nvim-lualine/lualine.nvim'},
     {'neovim/nvim-lspconfig'},
     {'hrsh7th/cmp-nvim-lsp'},
+    {'hrsh7th/cmp-nvim-lsp-signature-help'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
     {'hrsh7th/nvim-cmp'},
