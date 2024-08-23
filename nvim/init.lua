@@ -23,6 +23,12 @@ local lsp_on_attach = function()
     vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
     vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
     vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
+    vim.api.nvim_create_autocmd('CursorHold', {
+        pattern = {'*.go'},
+        callback = function()
+            vim.diagnostic.open_float(nil, {focus=false, scope='line'})
+        end,
+    })
 end
 
 local lsp = require('lspconfig')
@@ -45,12 +51,6 @@ lsp.gopls.setup({
                 end
                 vim.lsp.buf.format({async = false})
             end
-        })
-        vim.api.nvim_create_autocmd('CursorHold', {
-            pattern = {'*.go'},
-            callback = function()
-                vim.diagnostic.open_float(nil, {focus=false, scope='line'})
-            end,
         })
     end
 })
@@ -102,8 +102,12 @@ require('lualine').setup({
 
 local telescope = require('telescope')
 telescope.setup({
-    defaults = {preview = false},
-    pickers = {diagnostics = {line_width = 0.60}},
+    defaults = {
+        layout_strategy = 'vertical',
+        layout_config = {height = vim.o.lines-5, width = vim.o.columns-20},
+        preview = {treesitter = false, hide_on_startup = true},
+    },
+    pickers = {diagnostics = {line_width = 0.99}},
 })
 telescope.load_extension('fzf')
 vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
@@ -115,8 +119,8 @@ require('gitsigns').setup({
     numhl = true,
     current_line_blame = true,
     on_attach = function(bufnr)
-        vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR>')
-        vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR>')
+        vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
+        vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR><CR>')
         vim.keymap.set('n', 'gh', '<cmd>Gitsigns preview_hunk_inline<CR>')
         vim.keymap.set('n', 'fg', '<cmd>Telescope git_commits<CR>')
     end,
