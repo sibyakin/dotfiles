@@ -1,34 +1,42 @@
-snippet iota "constants with iota"
+snippet iot "constants with iota"
     const (
-        ${1:NAME1} = iota
-        ${0:NAME2}
+        ${1} = iota
+        ${2}
     )
+    ${0}
+ 
+snippet er "error in scope"
+    if err := ${1:call}; err != nil {
+        ${2:handle}
+    }
+    ${0}
 
-snippet ern "if error not nil"
+snippet ern "error"
     if err != nil {
         ${1}
     }
     ${0}
 
-snippet err "if error not nil, return err"
+snippet err "error, return"
     if err != nil {
         return err
     }
     ${0}
 
-snippet forr "for range loop"
-    for ${1:e} := range ${2:collection} {
-        ${0:${VISUAL}}
+snippet for "for range loop"
+    for ${1} := range ${2} {
+        ${3}
     }
-
+    ${0}
+ 
 snippet fun "function"
-    func ${1:funcName}(${2}) ${3:error} {
+    func ${1:name}(${2:params}) ${3:returned} {
         ${4}
     }
     ${0}
-
+ 
 snippet fum "method"
-    func (${1:receiver} ${2:type}) ${3:funcName}(${4}) ${5:error} {
+    func (${1:receiver} ${2:type}) ${3:name}(${4:params}) ${5:returned} {
         ${6}
     }
     ${0}
@@ -38,30 +46,22 @@ snippet main "func main()"
         ${1}
     }
     ${0}
-
-snippet select "select"
+ 
+snippet sel "select"
     select {
-    case ${1:v1} := <-${2:chan1}
+    case ${1} := <-${2}
         ${3}
     default:
-        ${0}
-    }
+        ${4}
+    } 
+    ${0}
 
-snippet switch "switch"
-    switch ${1:var} {
-    case ${2:value1}:
+snippet swi "switch"
+    switch ${1} {
+    case ${2}:
         ${3}
     default:
-        ${0}
+        ${4}
     }
-
-snippet gofun "goroutine anonymous function"
-    go func(${1} ${2:type}) {
-        ${3:/* code */}
-    }(${0})
-
-snippet kim "if key in a map"
-    if ${1:value}, ok := ${2:map}[${3:key}]; ok == true {
-        ${4:/* code */}
-    }
+    ${0}
 
