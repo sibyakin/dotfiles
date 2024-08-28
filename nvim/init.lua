@@ -1,3 +1,7 @@
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
 vim.opt.cmdheight = 0
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
@@ -8,10 +12,6 @@ vim.opt.tabstop = 4
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
 vim.opt.updatetime = 500
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
-vim.g.loaded_node_provider = 0
-vim.g.loaded_python3_provider = 0
 vim.lsp.set_log_level(vim.log.levels.WARN)
 vim.cmd('colo tender')
 vim.cmd('command! Q :q')
@@ -68,7 +68,11 @@ cmp.setup({
     mapping = cmp.mapping.preset.insert({
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
-                cmp.select_next_item()
+                if #cmp.get_entries() == 1 then
+                    cmp.confirm({select = true})
+                else
+                    cmp.select_next_item()
+		end
             elseif snippy.can_expand_or_advance() then
                 snippy.expand_or_advance()
             else
@@ -81,11 +85,12 @@ cmp.setup({
         {name = 'snippy'},
         {name = 'nvim_lsp'},
         {name = 'nvim_lsp_signature_help'},
+        {name = 'buffer', option = {keyword_length = 5, indexing_interval = 500, indexing_batch_size = 200}},
     },
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'vim', 'vimdoc', 'lua', 'go', 'gomod'},
+    ensure_installed = {'go', 'gomod', 'gotmpl'},
     highlight = {enable = true},
 })
 require('nvim-web-devicons').setup()
@@ -93,11 +98,7 @@ require('nvim-autopairs').setup()
 
 require('lualine').setup({
     options = {theme = 'gruvbox-material'},
-    sections = {
-        lualine_b = {'branch', 'diff', {'diagnostics', sources = {'nvim_workspace_diagnostic'}}},
-        lualine_c = {{'filename', path = 1, shorting_target = 100}},
-        lualine_x = {'filetype'},
-    },
+    sections = {lualine_c = {{'filename', path = 1}}},
 })
 
 local telescope = require('telescope')
@@ -132,6 +133,7 @@ require('paq')({
     {'nvim-tree/nvim-web-devicons'},
     {'nvim-lualine/lualine.nvim'},
     {'neovim/nvim-lspconfig'},
+    {'hrsh7th/cmp-buffer'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/cmp-nvim-lsp-signature-help'},
     {'dcampos/nvim-snippy'},
