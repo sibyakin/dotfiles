@@ -85,7 +85,6 @@ cmp.setup({
         {name = 'snippy'},
         {name = 'nvim_lsp'},
         {name = 'nvim_lsp_signature_help'},
-        {name = 'buffer', option = {keyword_length = 5, indexing_interval = 500, indexing_batch_size = 200}},
     },
 })
 
@@ -95,7 +94,13 @@ require('nvim-treesitter.configs').setup({
 })
 require('nvim-web-devicons').setup()
 require('nvim-autopairs').setup()
-
+require('fidget').setup({
+    notification = {
+        override_vim_notify = true,
+        view = {stack_upwards = false}, 
+        window = {border = 'single', max_width = 75},
+    },
+})
 require('lualine').setup({
     options = {theme = 'gruvbox-material'},
     sections = {lualine_c = {{'filename', path = 1}}},
@@ -133,7 +138,6 @@ require('paq')({
     {'nvim-tree/nvim-web-devicons'},
     {'nvim-lualine/lualine.nvim'},
     {'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-buffer'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/cmp-nvim-lsp-signature-help'},
     {'dcampos/nvim-snippy'},
@@ -144,5 +148,6 @@ require('paq')({
     {'lewis6991/gitsigns.nvim'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+    {'j-hui/fidget.nvim'},
     {'jacoborus/tender.vim'},
 })
