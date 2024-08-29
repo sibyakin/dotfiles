@@ -98,7 +98,7 @@ require('fidget').setup({
     notification = {
         override_vim_notify = true,
         view = {stack_upwards = false}, 
-        window = {border = 'single', max_width = 75},
+        window = {winblend = 0, max_width = 100},
     },
 })
 require('lualine').setup({
