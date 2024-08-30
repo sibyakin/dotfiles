@@ -65,22 +65,27 @@ cmp.setup({
             snippy.expand_snippet(args.body)
         end,
     },
-    mapping = cmp.mapping.preset.insert({
+    mapping = cmp.mapping{
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
-                if #cmp.get_entries() == 1 then
-                    cmp.confirm({select = true})
-                else
-                    cmp.select_next_item()
-		end
+                cmp.select_next_item()
             elseif snippy.can_expand_or_advance() then
                 snippy.expand_or_advance()
             else
                 fallback()
             end
         end, {'i', 's'}),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            elseif snippy.can_jump(-1) then
+                snippy.previous()
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
         ['<C-d>'] = cmp.mapping.confirm({select = true}),
-    }),
+    },
     sources = {
         {name = 'snippy'},
         {name = 'nvim_lsp'},
@@ -127,7 +132,7 @@ require('gitsigns').setup({
     on_attach = function(bufnr)
         vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
         vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR><CR>')
-        vim.keymap.set('n', 'gh', '<cmd>Gitsigns preview_hunk_inline<CR>')
+        vim.keymap.set('n', 'gh', '<cmd>Gitsigns diffthis<CR>')
         vim.keymap.set('n', 'fg', '<cmd>Telescope git_commits<CR>')
     end,
 })
