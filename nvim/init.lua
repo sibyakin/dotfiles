@@ -130,7 +130,6 @@ vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 
 require('gitsigns').setup({
-    numhl = true,
     current_line_blame = true,
     on_attach = function(bufnr)
         vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
