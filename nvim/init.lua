@@ -71,6 +71,8 @@ local lsp_on_attach = function()
     vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
 end
 
+require('auto-session').setup({auto_restore_last_session = true})
+
 local lsp = require('lspconfig')
 lsp.gopls.setup({
     on_attach =  function()
@@ -151,6 +153,7 @@ require('paq')({
     {'hrsh7th/nvim-cmp'},
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {'windwp/nvim-autopairs'},
+    {'rmagatti/auto-session'},
     {'lewis6991/gitsigns.nvim'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
