@@ -14,21 +14,61 @@ vim.opt.mouse = 'cv'
 vim.opt.updatetime = 500
 vim.lsp.set_log_level(vim.log.levels.WARN)
 vim.cmd('colo tender')
+vim.cmd('command! W :w')
 vim.cmd('command! Q :q')
 
 local lsp_on_attach = function()
+    local snippy = require('snippy')
+    snippy.setup({})
+
+    local cmp = require('cmp')
+    cmp.setup({
+        snippet = {
+            expand = function(args)
+                snippy.expand_snippet(args.body)
+            end,
+        },
+        mapping = cmp.mapping{
+            ['<Tab>'] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_next_item()
+                elseif snippy.can_expand_or_advance() then
+                    snippy.expand_or_advance()
+                else
+                    fallback()
+                end
+            end, {'i', 's'}),
+            ['<S-Tab>'] = cmp.mapping(function(fallback)
+                if cmp.visible() then
+                    cmp.select_prev_item()
+                elseif snippy.can_jump(-1) then
+                    snippy.previous()
+                else
+                    fallback()
+                end
+            end, { 'i', 's' }),
+            ['<C-d>'] = cmp.mapping.confirm({select = true}),
+        },
+        sources = {
+            {name = 'snippy'},
+            {name = 'nvim_lsp'},
+            {name = 'nvim_lsp_signature_help'},
+        },
+    })
+
+    vim.api.nvim_create_autocmd('CursorHold', {
+        pattern = {'*.go', 'go.mod', '*.tmpl'},
+        callback = function()
+            vim.diagnostic.open_float(nil, {focus=false, scope='line'})
+        end,
+    })
+    
     vim.diagnostic.config({signs = false, virtual_text = false, underline = false})
     vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
     vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
     vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
     vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
     vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
-    vim.api.nvim_create_autocmd('CursorHold', {
-        pattern = {'*.go'},
-        callback = function()
-            vim.diagnostic.open_float(nil, {focus=false, scope='line'})
-        end,
-    })
 end
 
 local lsp = require('lspconfig')
@@ -55,44 +95,6 @@ lsp.gopls.setup({
     end
 })
 
-local snippy = require('snippy')
-snippy.setup({})
-
-local cmp = require('cmp')
-cmp.setup({
-    snippet = {
-        expand = function(args)
-            snippy.expand_snippet(args.body)
-        end,
-    },
-    mapping = cmp.mapping{
-        ['<Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif snippy.can_expand_or_advance() then
-                snippy.expand_or_advance()
-            else
-                fallback()
-            end
-        end, {'i', 's'}),
-        ['<S-Tab>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif snippy.can_jump(-1) then
-                snippy.previous()
-            else
-                fallback()
-            end
-        end, { 'i', 's' }),
-        ['<C-d>'] = cmp.mapping.confirm({select = true}),
-    },
-    sources = {
-        {name = 'snippy'},
-        {name = 'nvim_lsp'},
-        {name = 'nvim_lsp_signature_help'},
-    },
-})
-
 require('nvim-treesitter.configs').setup({
     ensure_installed = {'go', 'gomod', 'gotmpl'},
     highlight = {enable = true},
@@ -114,7 +116,6 @@ require('lualine').setup({
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
-        layout_strategy = 'vertical',
         layout_config = {height = vim.o.lines-5, width = vim.o.columns-20},
         preview = {treesitter = false, hide_on_startup = true},
     },
