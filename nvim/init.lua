@@ -1,77 +1,58 @@
+--main
+vim.o.sessionoptions='blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
-vim.opt.cmdheight = 0
-vim.opt.expandtab = true
-vim.opt.ignorecase = true
-vim.opt.number = true
-vim.opt.undofile = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.guicursor = ''
-vim.opt.mouse = 'cv'
-vim.opt.updatetime = 500
-vim.lsp.set_log_level(vim.log.levels.WARN)
-vim.cmd('colo tender')
+vim.o.cmdheight = 0
+vim.o.expandtab = true
+vim.o.ignorecase = true
+vim.o.number = true
+vim.o.undofile = true
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.guicursor = ''
+vim.o.mouse = 'cv'
+vim.o.updatetime = 500
 vim.cmd('command! W :w')
 vim.cmd('command! Q :q')
+vim.cmd('colo darcula-dark')
 
+--modules
+require('paq')({
+    {'savq/paq-nvim'},
+    {'nvim-lua/plenary.nvim'},
+    {'nvim-tree/nvim-web-devicons'},
+    {'nvim-lualine/lualine.nvim'},
+    {'neovim/nvim-lspconfig'},
+    {'hrsh7th/cmp-nvim-lsp'},
+    {'hrsh7th/cmp-nvim-lsp-signature-help'},
+    {'dcampos/nvim-snippy'},
+    {'dcampos/cmp-snippy'},
+    {'hrsh7th/nvim-cmp'},
+    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'windwp/nvim-autopairs'},
+    {'rmagatti/auto-session'},
+    {'Pocco81/auto-save.nvim'},
+    {'lewis6991/gitsigns.nvim'},
+    {'nvim-telescope/telescope.nvim'},
+    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+    {'nvim-telescope/telescope-ui-select.nvim'},
+    {'j-hui/fidget.nvim'},
+    {'xiantang/darcula-dark.nvim'},
+})
+
+--lsp+cmp
 local lsp_on_attach = function()
-    local snippy = require('snippy')
-    snippy.setup({})
-
-    local cmp = require('cmp')
-    cmp.setup({
-        snippet = {
-            expand = function(args)
-                snippy.expand_snippet(args.body)
-            end,
-        },
-        mapping = cmp.mapping{
-            ['<Tab>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_next_item()
-                elseif snippy.can_expand_or_advance() then
-                    snippy.expand_or_advance()
-                else
-                    fallback()
-                end
-            end, {'i', 's'}),
-            ['<S-Tab>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then
-                    cmp.select_prev_item()
-                elseif snippy.can_jump(-1) then
-                    snippy.previous()
-                else
-                    fallback()
-                end
-            end, { 'i', 's' }),
-            ['<C-d>'] = cmp.mapping.confirm({select = true}),
-        },
-        sources = {
-            {name = 'snippy'},
-            {name = 'nvim_lsp'},
-            {name = 'nvim_lsp_signature_help'},
-        },
-    })
+    vim.diagnostic.config({signs = false, virtual_text = false})
 
     vim.api.nvim_create_autocmd('CursorHold', {
         pattern = {'*.go', 'go.mod', '*.tmpl'},
         callback = function()
-            vim.diagnostic.open_float(nil, {focus=false, scope='line'})
+            vim.diagnostic.open_float(nil, {focus=false})
         end,
     })
-    
-    vim.diagnostic.config({signs = false, virtual_text = false, underline = false})
-    vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
-    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
-    vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
-    vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
-    vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
 end
-
-require('auto-session').setup({auto_restore_last_session = true})
 
 local lsp = require('lspconfig')
 lsp.gopls.setup({
@@ -97,6 +78,48 @@ lsp.gopls.setup({
     end
 })
 
+local snippy = require('snippy')
+snippy.setup({})
+
+local cmp = require('cmp')
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            snippy.expand_snippet(args.body)
+        end,
+    },
+    mapping = cmp.mapping{
+        ['<Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            elseif snippy.can_expand_or_advance() then
+                snippy.expand_or_advance()
+            else
+                fallback()
+            end
+        end, {'i', 's'}),
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            elseif snippy.can_jump(-1) then
+                snippy.previous()
+            else
+                fallback()
+            end
+        end, { 'i', 's' }),
+        ['<C-d>'] = cmp.mapping.confirm({select = true}),
+    },
+    sources = {
+        {name = 'snippy'},
+        {name = 'nvim_lsp'},
+        {name = 'nvim_lsp_signature_help'},
+    },
+})
+
+--ui
+require('auto-save').setup({debounce_delay = 5000})
+require('auto-session').setup({auto_restore_last_session = true})
+require('gitsigns').setup({current_line_blame = true})
 require('nvim-treesitter.configs').setup({
     ensure_installed = {'go', 'gomod', 'gotmpl'},
     highlight = {enable = true},
@@ -110,11 +133,7 @@ require('fidget').setup({
         window = {winblend = 0, max_width = 100},
     },
 })
-require('lualine').setup({
-    options = {theme = 'gruvbox-material'},
-    sections = {lualine_c = {{'filename', path = 1}}},
-})
-
+require('lualine').setup({sections = {lualine_c = {{'filename', path = 1}}}})
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
@@ -124,38 +143,19 @@ telescope.setup({
     pickers = {diagnostics = {line_width = 0.99}},
 })
 telescope.load_extension('fzf')
+telescope.load_extension('ui-select')
+
+--key bindings
 vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-
-require('gitsigns').setup({
-    current_line_blame = true,
-    on_attach = function(bufnr)
-        vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
-        vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR><CR>')
-        vim.keymap.set('n', 'gh', '<cmd>Gitsigns diffthis<CR>')
-        vim.keymap.set('n', 'fg', '<cmd>Telescope git_commits<CR>')
-    end,
-})
-
-require('paq')({
-    {'savq/paq-nvim'},
-    {'nvim-lua/plenary.nvim'},
-    {'nvim-tree/nvim-web-devicons'},
-    {'nvim-lualine/lualine.nvim'},
-    {'neovim/nvim-lspconfig'},
-    {'hrsh7th/cmp-nvim-lsp'},
-    {'hrsh7th/cmp-nvim-lsp-signature-help'},
-    {'dcampos/nvim-snippy'},
-    {'dcampos/cmp-snippy'},
-    {'hrsh7th/nvim-cmp'},
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    {'windwp/nvim-autopairs'},
-    {'rmagatti/auto-session'},
-    {'lewis6991/gitsigns.nvim'},
-    {'nvim-telescope/telescope.nvim'},
-    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'j-hui/fidget.nvim'},
-    {'jacoborus/tender.vim'},
-})
+vim.keymap.set('n', 'fg', '<cmd>Telescope git_commits<CR>')
+vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
+vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
+vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
+vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
+vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
+vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
+vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR><CR>')
+vim.keymap.set('n', 'gh', '<cmd>Gitsigns diffthis<CR>')
