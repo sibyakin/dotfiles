@@ -118,7 +118,7 @@ cmp.setup({
 
 --ui
 require('auto-save').setup({debounce_delay = 5000})
-require('auto-session').setup({auto_restore_last_session = true})
+require('auto-session').setup({auto_restore_last_session = true, lazy_support = false})
 require('gitsigns').setup({current_line_blame = true})
 require('nvim-treesitter.configs').setup({
     ensure_installed = {'go', 'gomod', 'gotmpl'},
