@@ -33,7 +33,6 @@ require('paq')({
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {'windwp/nvim-autopairs'},
     {'rmagatti/auto-session'},
-    {'Pocco81/auto-save.nvim'},
     {'lewis6991/gitsigns.nvim'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
@@ -117,7 +116,6 @@ cmp.setup({
 })
 
 --ui
-require('auto-save').setup({debounce_delay = 5000})
 require('auto-session').setup({auto_restore_last_session = true, lazy_support = false})
 require('gitsigns').setup({current_line_blame = true})
 require('nvim-treesitter.configs').setup({
