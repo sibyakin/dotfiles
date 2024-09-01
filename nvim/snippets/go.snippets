@@ -1,53 +1,46 @@
-snippet iot "constants with iota"
-    const (
-        ${1} = iota
+snippet er "If error is not nil with scope"
+    if err := ${1}; err != nil {
         ${2}
-    )
-    ${0}
- 
-snippet er "error in scope"
-    if err := ${1:call}; err != nil {
-        ${2:handle}
     }
     ${0}
 
-snippet ern "error"
+snippet ern "If error is not nil"
     if err != nil {
         ${1}
     }
     ${0}
 
-snippet err "error, return"
+snippet err "If error is not nil with return"
     if err != nil {
         return err
     }
     ${0}
 
-snippet for "for range loop"
+snippet for "Define for range loop"
     for ${1} := range ${2} {
         ${3}
     }
     ${0}
  
-snippet fun "function"
-    func ${1:name}(${2:params}) ${3:returned} {
+snippet fun "New function"
+    func ${1}(${2}) ${3} {
         ${4}
     }
     ${0}
  
-snippet fum "method"
-    func (${1:receiver} ${2:type}) ${3:name}(${4:params}) ${5:returned} {
+snippet fum "New method"
+    func (${1} ${2}) ${3}(${4}) ${5} {
         ${6}
     }
     ${0}
 
-snippet main "func main()"
+snippet main "Just main() definition"
     func main() {
         ${1}
     }
     ${0}
  
-snippet sel "select"
+snippet sel "Define select with default case"
     select {
     case ${1} := <-${2}
         ${3}
@@ -56,7 +49,7 @@ snippet sel "select"
     } 
     ${0}
 
-snippet swi "switch"
+snippet swi "Define switch with default case"
     switch ${1} {
     case ${2}:
         ${3}
