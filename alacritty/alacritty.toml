@@ -14,7 +14,8 @@ family = "Cousine Nerd Font"
 [window]
 decorations = "None"
 startup_mode = "Maximized"
+#decorations_theme_variant = "Dark"
 
 #[window.dimensions]
-#columns = 144
-#lines = 44
+#columns = 152
+#lines = 48
