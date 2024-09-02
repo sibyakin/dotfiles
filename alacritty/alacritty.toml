@@ -1,9 +1,9 @@
 import = [
-    "~/.config/alacritty/colorscheme.toml"
+    "~/.config/alacritty/themes/tender.toml"
 ]
 
-[shell]
-program = "/usr/bin/tmux"
+[scrolling]
+history = 100000
 
 [font]
 size = 16.5
@@ -15,10 +15,6 @@ family = "Cousine Nerd Font"
 decorations = "None"
 startup_mode = "Maximized"
 
-[window.dimensions]
-columns = 144
-lines = 44
-
-[window.padding]
-x = 2
-y = 3
+#[window.dimensions]
+#columns = 144
+#lines = 44
