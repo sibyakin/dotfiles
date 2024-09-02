@@ -40,7 +40,6 @@ require('paq')({
 
 local lsp_on_attach = function()
     vim.diagnostic.config({signs = false, virtual_text = false})
-
     vim.api.nvim_create_autocmd('CursorHold', {
         pattern = {'*.go', 'go.mod', '*.tmpl'},
         callback = function()
@@ -66,6 +65,7 @@ lsp.gopls.setup({
                         end
                     end
                 end
+                vim.lsp.buf.format({async = false})
             end
         })
     end
