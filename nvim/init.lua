@@ -27,7 +27,7 @@ require('paq')({
     {'dcampos/cmp-snippy'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/cmp-nvim-lsp-signature-help'},
-    {'hrsh7th/nvim-cmp'},
+    {'yioneko/nvim-cmp', branch = 'perf'},
     {'windwp/nvim-autopairs'},
     {'rmagatti/auto-session'},
     {'lewis6991/gitsigns.nvim'},
@@ -76,14 +76,11 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
+    performance = {debounce = 10, throttle = 5, max_view_entries = 10},
     mapping = cmp.mapping{
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
-                if #cmp.get_entries() == 1 then
-                    cmp.confirm({select = true})
-                else
-                    cmp.select_next_item()
-                end
+                cmp.select_next_item()
             elseif snippy.can_expand_or_advance() then
                 snippy.expand_or_advance()
             else
