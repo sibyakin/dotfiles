@@ -1,4 +1,4 @@
-vim.o.sessionoptions='blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.o.sessionoptions='buffers,localoptions'
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
@@ -11,11 +11,10 @@ vim.o.undofile = true
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.guicursor = ''
-vim.o.mouse = 'cv'
 vim.o.updatetime = 500
+vim.cmd.colorscheme('darcula-dark')
 vim.cmd('command! W :w')
 vim.cmd('command! Q :q')
-vim.cmd('colo darcula-dark')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -76,7 +75,7 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {debounce = 10, throttle = 5, max_view_entries = 10},
+    performance = {debounce = 15, throttle = 10, max_view_entries = 10},
     mapping = cmp.mapping{
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
