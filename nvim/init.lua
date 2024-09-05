@@ -11,17 +11,18 @@ vim.o.undofile = true
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.guicursor = ''
+vim.o.mouse = 'cv'
 vim.o.updatetime = 500
-vim.cmd.colorscheme('darcula-dark')
+vim.o.laststatus = 3
 vim.cmd('command! W :w')
 vim.cmd('command! Q :q')
+vim.cmd('colo darcula-dark')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
     {'nvim-lua/plenary.nvim'},
     {'nvim-tree/nvim-web-devicons'},
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
-    {'nvim-lualine/lualine.nvim'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
     {'hrsh7th/cmp-nvim-lsp'},
@@ -100,8 +101,6 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 require('auto-session').setup({auto_restore_last_session = true})
-require('nvim-web-devicons').setup({default = true, strict = true})
-require('lualine').setup({sections = {lualine_c = {{'filename', path = 1}}}})
 require('fidget').setup({
     notification = {
         override_vim_notify = true,
@@ -110,7 +109,12 @@ require('fidget').setup({
     },
 })
 local telescope = require('telescope')
-telescope.setup({defaults = {preview = {hide_on_startup = true}}})
+telescope.setup({
+    defaults = {
+        preview = {hide_on_startup = true},
+        layout_config = {width = 0.90, height = 0.90},
+    }
+})
 telescope.load_extension('fzf')
 require('gitsigns').setup({current_line_blame = true})
 require('nvim-autopairs').setup()
