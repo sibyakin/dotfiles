@@ -12,7 +12,7 @@ vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.guicursor = ''
 vim.o.mouse = 'cv'
-vim.o.updatetime = 500
+vim.o.updatetime = 250
 vim.o.laststatus = 3
 vim.cmd('command! W :w')
 vim.cmd('command! Q :q')
@@ -76,7 +76,7 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {debounce = 15, throttle = 10, max_view_entries = 10},
+    performance = {debounce = 10, throttle = 10, max_view_entries = 10},
     mapping = cmp.mapping{
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
