@@ -1,22 +1,19 @@
-vim.o.sessionoptions='buffers,localoptions'
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
-vim.o.cmdheight = 0
-vim.o.expandtab = true
-vim.o.ignorecase = true
-vim.o.number = true
-vim.o.undofile = true
-vim.o.shiftwidth = 4
-vim.o.tabstop = 4
-vim.o.guicursor = ''
-vim.o.mouse = 'cv'
-vim.o.updatetime = 250
-vim.o.laststatus = 3
-vim.cmd('command! W :w')
-vim.cmd('command! Q :q')
-vim.cmd('colo darcula-dark')
+vim.opt.sessionoptions='buffers,localoptions'
+vim.opt.expandtab = true
+vim.opt.ignorecase = true
+vim.opt.number = true
+vim.opt.undofile = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.guicursor = ''
+vim.opt.mouse = 'cv'
+vim.opt.updatetime = 250
+vim.opt.laststatus = 3
+vim.cmd.colorscheme('darcula-dark')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -76,7 +73,7 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {debounce = 10, throttle = 10, max_view_entries = 10},
+    performance = {debounce = 5, throttle = 5, max_view_entries = 7},
     mapping = cmp.mapping{
         ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
@@ -87,7 +84,7 @@ cmp.setup({
                 fallback()
             end
         end, {'i', 's'}),
-        ['<C-d>'] = cmp.mapping.confirm({select = true}),
+        ['<C-d>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
     },
     sources = {
         {name = 'snippy'},
@@ -104,8 +101,7 @@ require('auto-session').setup({auto_restore_last_session = true})
 require('fidget').setup({
     notification = {
         override_vim_notify = true,
-        view = {stack_upwards = false}, 
-        window = {winblend = 0},
+        window = {align = 'top', winblend = 0},
     },
 })
 local telescope = require('telescope')
