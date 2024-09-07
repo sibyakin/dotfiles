@@ -13,8 +13,8 @@ vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
 vim.opt.updatetime = 250
 vim.opt.laststatus = 3
-vim.opt.cmdheight = 0
-vim.cmd.colorscheme('darcula-dark')
+vim.opt.background = 'dark'
+vim.cmd.colorscheme('vscode')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -28,13 +28,13 @@ require('paq')({
     {'yioneko/nvim-cmp', branch = 'perf'},
     {'windwp/nvim-autopairs'},
     {'rmagatti/auto-session'},
+    {'lewis6991/gitsigns.nvim'},
     {'echasnovski/mini-git'},
-    {'echasnovski/mini.diff'},
     {'echasnovski/mini.notify'},
     {'echasnovski/mini.statusline'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'xiantang/darcula-dark.nvim'},
+    {'Mofiqul/vscode.nvim'},
     {'savq/paq-nvim'},
 })
 
@@ -101,17 +101,12 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 require('auto-session').setup({auto_restore_last_session = true})
-require('mini.git').setup({})
-require('mini.diff').setup({
-    mappings = {
-        goto_prev = 'gb',
-        goto_next = 'gn',
-    },
-})
+require('gitsigns').setup({current_line_blame = true})
+require('mini.git').setup()
 mini_notify = require('mini.notify')
 mini_notify.setup({
     lsp_progress = {duration_last = 5000},
-    window = {winblend = 0, max_width_share = 0.45},
+    window = {winblend = 0, max_width_share = 0.50},
 })
 local notify_opts = {
     ERROR = {duration = 15000, hl_group = 'DiagnosticError'},
@@ -143,3 +138,6 @@ vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
 vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
 vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
 vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
+vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
+vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR><CR>')
+vim.keymap.set('n', 'gh', '<cmd>Gitsigns diffthis<CR>')
