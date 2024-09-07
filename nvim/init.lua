@@ -31,7 +31,7 @@ require('paq')({
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'xiantang/darcula-dark.nvim'},
-    {'j-hui/fidget.nvim'},
+    {'echasnovski/mini.notify'},
     {'savq/paq-nvim'},
 })
 
@@ -98,12 +98,20 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 require('auto-session').setup({auto_restore_last_session = true})
-require('fidget').setup({
-    notification = {
-        override_vim_notify = true,
-        window = {align = 'top', winblend = 0},
-    },
+mini_notify = require('mini.notify')
+mini_notify.setup({
+    lsp_progress = {duration_last = 5000},
+    window = {winblend = 0},
 })
+local notify_opts = {
+    ERROR = {duration = 15000, hl_group = 'DiagnosticError'},
+    WARN  = {duration = 15000, hl_group = 'DiagnosticWarn'},
+    INFO  = {duration = 15000, hl_group = 'DiagnosticInfo'},
+    DEBUG = {duration = 15000, hl_group = 'DiagnosticHint'},
+    TRACE = {duration = 15000, hl_group = 'DiagnosticOk'},
+    OFF   = {duration = 0, hl_group = 'MiniNotifyNormal'},
+}
+vim.notify = mini_notify.make_notify(notify_opts)
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
