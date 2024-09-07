@@ -9,10 +9,10 @@ size = 16.5
 family = "Cousine Nerd Font"
 
 [window]
-decorations = "None"
-startup_mode = "Maximized"
-#decorations_theme_variant = "Dark"
+#decorations = "None"
+#startup_mode = "Maximized"
+decorations_theme_variant = "Dark"
 
-#[window.dimensions]
-#columns = 172
-#lines = 52
+[window.dimensions]
+columns = 152
+lines = 50
