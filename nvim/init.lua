@@ -28,8 +28,8 @@ require('paq')({
     {'yioneko/nvim-cmp', branch = 'perf'},
     {'windwp/nvim-autopairs'},
     {'rmagatti/auto-session'},
+    {'lewis6991/gitsigns.nvim'},
     {'echasnovski/mini-git'},
-    {'echasnovski/mini.diff'},
     {'echasnovski/mini.notify'},
     {'echasnovski/mini.statusline'},
     {'nvim-telescope/telescope.nvim'},
@@ -101,13 +101,7 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 require('auto-session').setup({auto_restore_last_session = true})
-require('mini.diff').setup({
-    view = {style = 'sign'},
-    mappings = {
-        goto_prev = 'gn',
-        goto_next = 'gb',
-    }
-})
+require('gitsigns').setup({current_line_blame = true})
 require('mini.git').setup()
 mini_notify = require('mini.notify')
 mini_notify.setup({
@@ -144,3 +138,6 @@ vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
 vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
 vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
 vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
+vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
+vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR><CR>')
+vim.keymap.set('n', 'gh', '<cmd>Gitsigns diffthis<CR>')
