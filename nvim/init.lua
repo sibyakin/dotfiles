@@ -26,9 +26,9 @@ require('paq')({
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/cmp-nvim-lsp-signature-help'},
     {'yioneko/nvim-cmp', branch = 'perf'},
-    {'windwp/nvim-autopairs'},
     {'rmagatti/auto-session'},
-    {'lewis6991/gitsigns.nvim'},
+    {'windwp/nvim-autopairs'},
+    {'echasnovski/mini.diff'},
     {'echasnovski/mini-git'},
     {'echasnovski/mini.notify'},
     {'echasnovski/mini.statusline'},
@@ -50,6 +50,12 @@ end
 
 local lsp = require('lspconfig')
 lsp.gopls.setup({
+    settings = {
+        gopls = {
+            analyses = {unusedvariable = true},
+            gofumpt = true,
+        },
+    },
     on_attach =  function()
         lsp_on_attach()
         vim.api.nvim_create_autocmd('BufWritePre', {
@@ -76,18 +82,19 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {debounce = 5, throttle = 5, max_view_entries = 7},
+    performance = {throttle = 5, debounce = 5, max_view_entries = 10},
+    preselect = cmp.PreselectMode.None,
     mapping = cmp.mapping{
-        ['<Tab>'] = cmp.mapping(function(fallback)
+        ['<C-e>'] = cmp.mapping.abort(),
+        ['<Tab>'] = cmp.mapping(function()
             if cmp.visible() then
                 cmp.select_next_item()
             elseif snippy.can_expand_or_advance() then
                 snippy.expand_or_advance()
-            else
-                fallback()
             end
         end, {'i', 's'}),
-        ['<C-d>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+        ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'}),
+        ['<CR>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = false}),
     },
     sources = {
         {name = 'snippy'},
@@ -101,23 +108,25 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 require('auto-session').setup({auto_restore_last_session = true})
-require('gitsigns').setup({current_line_blame = true})
-require('mini.git').setup()
-mini_notify = require('mini.notify')
-mini_notify.setup({
-    lsp_progress = {duration_last = 5000},
-    window = {winblend = 0, max_width_share = 0.50},
+require('nvim-autopairs').setup({})
+require('mini.diff').setup({
+    mappings = {
+        goto_prev = 'gn',
+        goto_next = 'gb',
+    },
 })
+require('mini.git').setup({})
+mini_notify = require('mini.notify')
+mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
 local notify_opts = {
     ERROR = {duration = 15000, hl_group = 'DiagnosticError'},
     WARN  = {duration = 15000, hl_group = 'DiagnosticWarn'},
     INFO  = {duration = 15000, hl_group = 'DiagnosticInfo'},
     DEBUG = {duration = 15000, hl_group = 'DiagnosticHint'},
     TRACE = {duration = 15000, hl_group = 'DiagnosticOk'},
-    OFF   = {duration = 5000, hl_group = 'MiniNotifyNormal'},
 }
 vim.notify = mini_notify.make_notify(notify_opts)
-require('mini.statusline').setup({use_icons = false})
+require('mini.statusline').setup({use_icons = true})
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
@@ -126,7 +135,6 @@ telescope.setup({
     }
 })
 telescope.load_extension('fzf')
-require('nvim-autopairs').setup()
 
 vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
@@ -138,6 +146,3 @@ vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
 vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
 vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
 vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
-vim.keymap.set('n', 'gw', '<cmd>Gitsigns next_hunk<CR><CR>')
-vim.keymap.set('n', 'gs', '<cmd>Gitsigns prev_hunk<CR><CR>')
-vim.keymap.set('n', 'gh', '<cmd>Gitsigns diffthis<CR>')
