@@ -95,6 +95,7 @@ cmp.setup({
         end, {'i', 's'}),
         ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'}),
         ['<CR>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = false}),
+        ['<C-d>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
     },
     sources = {
         {name = 'snippy'},
@@ -111,8 +112,8 @@ require('auto-session').setup({auto_restore_last_session = true})
 require('nvim-autopairs').setup({})
 require('mini.diff').setup({
     mappings = {
-        goto_prev = 'gn',
-        goto_next = 'gb',
+        goto_prev = 'gb',
+        goto_next = 'gn',
     },
 })
 require('mini.git').setup({})
