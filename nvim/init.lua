@@ -82,7 +82,7 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {throttle = 5, debounce = 5, max_view_entries = 10},
+    performance = {throttle = 5, debounce = 5, max_view_entries = 7},
     preselect = cmp.PreselectMode.None,
     mapping = cmp.mapping{
         ['<C-e>'] = cmp.mapping.abort(),
@@ -128,11 +128,17 @@ local notify_opts = {
 }
 vim.notify = mini_notify.make_notify(notify_opts)
 require('mini.statusline').setup({use_icons = true})
+local telescope_actions = require('telescope.actions')
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
-        preview = {hide_on_startup = true},
-        layout_config = {width = 0.90, height = 0.90},
+        mappings = {
+            i = {
+                ['<ESC>'] = telescope_actions.close,
+                ['<C-d>'] = telescope_actions.delete_buffer + telescope_actions.move_to_top,
+            },
+        },
+        preview = false,
     }
 })
 telescope.load_extension('fzf')
@@ -141,8 +147,9 @@ vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-vim.keymap.set('n', 'fg', '<cmd>Telescope git_commits<CR>')
 vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
+vim.keymap.set('n', 'FD', '<cmd>Telescope lsp_document_symbols<CR>')
+vim.keymap.set('n', 'fa', '<cmd>Telescope lsp_incoming_calls<CR>')
 vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
 vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
 vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
