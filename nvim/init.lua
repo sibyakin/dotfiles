@@ -2,7 +2,7 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
-vim.opt.sessionoptions='buffers,localoptions'
+vim.opt.sessionoptions='blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
@@ -108,7 +108,7 @@ require('nvim-treesitter.configs').setup({
     ensure_installed = {'go', 'gomod'},
     highlight = {enable = true},
 })
-require('auto-session').setup({auto_restore_last_session = true})
+require('auto-session').setup({})
 require('nvim-autopairs').setup({})
 require('mini.diff').setup({
     mappings = {
