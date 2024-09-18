@@ -82,7 +82,7 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {throttle = 5, debounce = 5, max_view_entries = 7},
+    performance = {throttle = 10, debounce = 10, max_view_entries = 10},
     preselect = cmp.PreselectMode.None,
     mapping = cmp.mapping{
         ['<C-e>'] = cmp.mapping.abort(),
