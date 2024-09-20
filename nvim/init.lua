@@ -36,6 +36,7 @@ require('paq')({
     {'yioneko/nvim-cmp', branch = 'perf'},
     {'rmagatti/auto-session'},
     {'windwp/nvim-autopairs'},
+    {'lewis6991/gitsigns.nvim'},
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
@@ -115,6 +116,7 @@ require('nvim-treesitter.configs').setup({
 })
 require('auto-session').setup({})
 require('nvim-autopairs').setup({})
+require('gitsigns').setup({signcolumn = false, numhl = true, current_line_blame = true})
 mini_notify = require('mini.notify')
 mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
 local notify_opts = {
