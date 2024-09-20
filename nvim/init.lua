@@ -49,12 +49,7 @@ end
 
 local lsp = require('lspconfig')
 lsp.gopls.setup({
-    settings = {
-        gopls = {
-            analyses = {unusedvariable = true},
-            gofumpt = true,
-        },
-    },
+    settings = {gopls = {gofumpt = true}},
     on_attach =  function()
         lsp_on_attach()
         vim.api.nvim_create_autocmd('BufWritePre', {
@@ -103,28 +98,27 @@ cmp.setup({
     },
 })
 
+require('auto-session').setup({})
+require('nvim-autopairs').setup({})
+
 require('nvim-treesitter.configs').setup({
     ensure_installed = {'go', 'gomod'},
     highlight = {enable = true},
 })
-require('auto-session').setup({})
-require('nvim-autopairs').setup({})
+
 require('gitsigns').setup({signcolumn = false, numhl = true, current_line_blame = true})
+
 mini_notify = require('mini.notify')
 mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
 local notify_st = {duration = 15000, hl_group = 'Float'}
 local notify_opts = {ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st}
 vim.notify = mini_notify.make_notify(notify_opts)
+
 local telescope_actions = require('telescope.actions')
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
-        mappings = {
-            i = {
-                ['<ESC>'] = telescope_actions.close,
-                ['<C-d>'] = telescope_actions.delete_buffer + telescope_actions.move_to_top,
-            },
-        },
+        mappings = {i = {['<ESC>'] = telescope_actions.close}},
         preview = false,
     }
 })
