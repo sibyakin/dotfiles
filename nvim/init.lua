@@ -112,13 +112,8 @@ require('nvim-autopairs').setup({})
 require('gitsigns').setup({signcolumn = false, numhl = true, current_line_blame = true})
 mini_notify = require('mini.notify')
 mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
-local notify_opts = {
-    ERROR = {duration = 15000, hl_group = 'DiagnosticError'},
-    WARN  = {duration = 15000, hl_group = 'DiagnosticWarn'},
-    INFO  = {duration = 15000, hl_group = 'DiagnosticInfo'},
-    DEBUG = {duration = 15000, hl_group = 'DiagnosticHint'},
-    TRACE = {duration = 15000, hl_group = 'DiagnosticOk'},
-}
+local notify_st = {duration = 15000, hl_group = 'Float'}
+local notify_opts = {ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st}
 vim.notify = mini_notify.make_notify(notify_opts)
 local telescope_actions = require('telescope.actions')
 local telescope = require('telescope')
