@@ -3,6 +3,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.opt.sessionoptions='blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+vim.opt.statusline = table.concat({' %F', '%r', '%=', '%{&fileformat}', '%{&fileencoding} '}, ' ')
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
@@ -15,14 +16,6 @@ vim.opt.updatetime = 250
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
 vim.cmd.colorscheme('darcula')
-local statusline = {
-  '%F',
-  '%r',
-  '%m',
-  '%=',
-  '%P',
-}
-vim.opt.statusline = table.concat(statusline, ' ')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
