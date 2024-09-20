@@ -15,6 +15,14 @@ vim.opt.updatetime = 250
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
 vim.cmd.colorscheme('darcula')
+local statusline = {
+  '%F',
+  '%r',
+  '%m',
+  '%=',
+  '%P',
+}
+vim.opt.statusline = table.concat(statusline, ' ')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -28,10 +36,7 @@ require('paq')({
     {'yioneko/nvim-cmp', branch = 'perf'},
     {'rmagatti/auto-session'},
     {'windwp/nvim-autopairs'},
-    {'echasnovski/mini.diff'},
-    {'echasnovski/mini-git'},
     {'echasnovski/mini.notify'},
-    {'echasnovski/mini.statusline'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'doums/darcula'},
@@ -110,13 +115,6 @@ require('nvim-treesitter.configs').setup({
 })
 require('auto-session').setup({})
 require('nvim-autopairs').setup({})
-require('mini.diff').setup({
-    mappings = {
-        goto_prev = 'gb',
-        goto_next = 'gn',
-    },
-})
-require('mini.git').setup({})
 mini_notify = require('mini.notify')
 mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
 local notify_opts = {
@@ -127,7 +125,6 @@ local notify_opts = {
     TRACE = {duration = 15000, hl_group = 'DiagnosticOk'},
 }
 vim.notify = mini_notify.make_notify(notify_opts)
-require('mini.statusline').setup({use_icons = true})
 local telescope_actions = require('telescope.actions')
 local telescope = require('telescope')
 telescope.setup({
