@@ -12,7 +12,6 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
-vim.opt.updatetime = 250
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
 vim.cmd.colorscheme('darcula')
@@ -37,38 +36,47 @@ require('paq')({
     {'savq/paq-nvim'},
 })
 
-local lsp_on_attach = function()
-    vim.diagnostic.config({signs = false, virtual_text = false})
-    vim.api.nvim_create_autocmd('CursorHold', {
-        pattern = {'*.go', 'go.mod'},
-        callback = function()
-            vim.diagnostic.open_float(nil, {focus=false})
-        end,
-    })
+local lsp_fix_imports_and_format = function()
+    local params = vim.lsp.util.make_range_params()
+    params.context = {only = {'source.organizeImports'}}
+    local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, 3000)
+    for cid, res in pairs(result or {}) do
+        for _, r in pairs(res.result or {}) do
+            if r.edit then
+                vim.lsp.util.apply_workspace_edit(r.edit, 'utf-8')
+            end
+        end
+    end
+    vim.lsp.buf.format({async = false})
 end
 
-local lsp = require('lspconfig')
-lsp.gopls.setup({
+local lsp_show_diagnostics = function()
+    vim.diagnostic.open_float(nil, {focus = false})
+end
+
+local lsp_on_attach = function()
+    vim.diagnostic.config({signs = false, virtual_text = false})
+    vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
+    vim.keymap.set('n', 'FD', '<cmd>Telescope lsp_document_symbols<CR>')
+    vim.keymap.set('n', 'fa', '<cmd>Telescope lsp_incoming_calls<CR>')
+    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
+    vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
+    vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
+    vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
+    vim.api.nvim_create_autocmd('BufWritePre', {
+        pattern = {'*.go'},
+        callback = lsp_fix_imports_and_format,
+    })
+    vim.api.nvim_create_autocmd('CursorHold', {
+        pattern = {'*.go', 'go.mod'},
+        callback = lsp_show_diagnostics,
+    })
+    vim.opt.updatetime = 250
+end
+
+require('lspconfig').gopls.setup({
     settings = {gopls = {gofumpt = true}},
-    on_attach =  function()
-        lsp_on_attach()
-        vim.api.nvim_create_autocmd('BufWritePre', {
-            pattern = {'*.go'},
-            callback = function()
-                local params = vim.lsp.util.make_range_params()
-                params.context = {only = {'source.organizeImports'}}
-                local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params)
-                for cid, res in pairs(result or {}) do
-                    for _, r in pairs(res.result or {}) do
-                        if r.edit then
-                            vim.lsp.util.apply_workspace_edit(r.edit, 'utf-8')
-                        end
-                    end
-                end
-                vim.lsp.buf.format({async = false})
-            end
-        })
-    end
+    on_attach = lsp_on_attach(),
 })
 
 local snippy = require('snippy')
@@ -76,25 +84,18 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {throttle = 10, debounce = 10, max_view_entries = 10},
+    performance = {throttle = 5, debounce = 5, max_view_entries = 10},
     preselect = cmp.PreselectMode.None,
     mapping = cmp.mapping{
-        ['<C-e>'] = cmp.mapping.abort(),
-        ['<Tab>'] = cmp.mapping(function()
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif snippy.can_expand_or_advance() then
-                snippy.expand_or_advance()
-            end
-        end, {'i', 's'}),
-        ['<S-Tab>'] = cmp.mapping(cmp.mapping.select_prev_item(), {'i', 's'}),
-        ['<CR>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = false}),
-        ['<C-d>'] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+        [  '<Tab>'  ] = cmp.mapping.select_next_item(),
+        [ '<S-Tab>' ] = cmp.mapping.select_prev_item(),
+        [  '<C-d>'  ] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
+        ['<C-Space>'] = cmp.mapping(snippy.expand_or_advance),
     },
     sources = {
-        {name = 'snippy'},
-        {name = 'nvim_lsp'},
-        {name = 'nvim_lsp_signature_help'},
+        {name = 'snippy', keyword_length = 2},
+        {name = 'nvim_lsp', keyword_length = 3},
+        {name = 'nvim_lsp_signature_help', keyword_length = 3},
     },
 })
 
@@ -111,7 +112,9 @@ require('gitsigns').setup({signcolumn = false, numhl = true, current_line_blame 
 mini_notify = require('mini.notify')
 mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
 local notify_st = {duration = 15000, hl_group = 'Float'}
-local notify_opts = {ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st}
+local notify_opts = {
+    ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st
+}
 vim.notify = mini_notify.make_notify(notify_opts)
 
 local telescope_actions = require('telescope.actions')
@@ -128,10 +131,3 @@ vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
-vim.keymap.set('n', 'FD', '<cmd>Telescope lsp_document_symbols<CR>')
-vim.keymap.set('n', 'fa', '<cmd>Telescope lsp_incoming_calls<CR>')
-vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
-vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
-vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
-vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
