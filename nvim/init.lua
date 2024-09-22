@@ -36,16 +36,13 @@ require('paq')({
     {'savq/paq-nvim'},
 })
 
+local lsp_params = vim.lsp.util.make_range_params()
+lsp_params.context = {only = {'source.organizeImports'}}
+
 local lsp_fix_imports_and_format = function()
-    local params = vim.lsp.util.make_range_params()
-    params.context = {only = {'source.organizeImports'}}
-    local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, 3000)
-    for cid, res in pairs(result or {}) do
-        for _, r in pairs(res.result or {}) do
-            if r.edit then
-                vim.lsp.util.apply_workspace_edit(r.edit, 'utf-8')
-            end
-        end
+    local response = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', lsp_params, 3000)
+    for _, v in pairs(response[1].result or {}) do
+        if v.edit then vim.lsp.util.apply_workspace_edit(v.edit, 'utf-8') end
     end
     vim.lsp.buf.format({async = false})
 end
