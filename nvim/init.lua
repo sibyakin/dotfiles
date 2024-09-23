@@ -97,6 +97,15 @@ cmp.setup({
         {name = 'nvim_lsp', keyword_length = 2},
         {name = 'nvim_lsp_signature_help', keyword_length = 2},
     },
+    sorting = {
+        comparators = {
+            compare.recently_used,
+            compare.exact,
+            compare.length,
+            compare.score,
+            compare.offset,
+        },
+    },
 })
 
 require('auto-session').setup({})
