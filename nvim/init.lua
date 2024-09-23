@@ -99,9 +99,10 @@ cmp.setup({
     },
     sorting = {
         comparators = {
-            cmp.config.compare.recently_used,
             cmp.config.compare.exact,
             cmp.config.compare.length,
+            cmp.config.compare.offset,
+            cmp.config.compare.recently_used,
         },
     },
 })
