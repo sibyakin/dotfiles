@@ -84,7 +84,7 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {throttle = 10, debounce = 10, max_view_entries = 10},
+    performance = {throttle = 10, debounce = 10, max_view_entries = 15},
     preselect = cmp.PreselectMode.None,
     mapping = cmp.mapping{
         [  '<Tab>'  ] = cmp.mapping.select_next_item(),
@@ -92,18 +92,18 @@ cmp.setup({
         [  '<C-d>'  ] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
         ['<C-Space>'] = cmp.mapping(snippy.expand_or_advance),
     },
-    sources = {
-        {name = 'snippy', keyword_length = 2},
-        {name = 'nvim_lsp', keyword_length = 3},
-        {name = 'nvim_lsp_signature_help', keyword_length = 3},
-    },
     sorting = {
         comparators = {
+            cmp.config.compare.recently_used,
             cmp.config.compare.exact,
             cmp.config.compare.length,
-            cmp.config.compare.offset,
-            cmp.config.compare.recently_used,
+            cmp.config.compare.sort_text,
         },
+    },
+    sources = {
+        {name = 'snippy'},
+        {name = 'nvim_lsp'},
+        {name = 'nvim_lsp_signature_help'},
     },
 })
 
