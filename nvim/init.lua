@@ -25,7 +25,7 @@ require('paq')({
     {'dcampos/cmp-snippy'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/cmp-nvim-lsp-signature-help'},
-    {'yioneko/nvim-cmp', branch = 'perf'},
+    {'hrsh7th/nvim-cmp'},
     {'rmagatti/auto-session'},
     {'windwp/nvim-autopairs'},
     {'lewis6991/gitsigns.nvim'},
@@ -38,8 +38,8 @@ require('paq')({
 
 local lsp_fix_imports_and_format = function()
     local params = vim.lsp.util.make_range_params()
-    params.context = {only = {"source.organizeImports"}}
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+    params.context = {only = {'source.organizeImports'}}
+    local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, 3000)
     for _, res in pairs(result or {}) do
       for _, r in pairs(res.result or {}) do
         if r.edit then
@@ -105,6 +105,7 @@ cmp.setup({
         {name = 'nvim_lsp'},
         {name = 'nvim_lsp_signature_help'},
     },
+    view = {entries = {selection_order = 'near_cursor', follow_cursor = true}},
 })
 
 require('auto-session').setup({})
