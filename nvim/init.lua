@@ -36,13 +36,16 @@ require('paq')({
     {'savq/paq-nvim'},
 })
 
-local lsp_params = vim.lsp.util.make_range_params()
-lsp_params.context = {only = {'source.organizeImports'}}
-
 local lsp_fix_imports_and_format = function()
-    local response = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', lsp_params, 3000)
-    for _, v in pairs(response[1].result or {}) do
-        if v.edit then vim.lsp.util.apply_workspace_edit(v.edit, 'utf-8') end
+    local params = vim.lsp.util.make_range_params()
+    params.context = {only = {"source.organizeImports"}}
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+    for _, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          vim.lsp.util.apply_workspace_edit(r.edit, 'utf-8')
+        end
+      end
     end
     vim.lsp.buf.format({async = false})
 end
@@ -81,7 +84,7 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {throttle = 5, debounce = 5, max_view_entries = 10},
+    performance = {throttle = 10, debounce = 10, max_view_entries = 10},
     preselect = cmp.PreselectMode.None,
     mapping = cmp.mapping{
         [  '<Tab>'  ] = cmp.mapping.select_next_item(),
@@ -91,8 +94,8 @@ cmp.setup({
     },
     sources = {
         {name = 'snippy', keyword_length = 2},
-        {name = 'nvim_lsp', keyword_length = 3},
-        {name = 'nvim_lsp_signature_help', keyword_length = 3},
+        {name = 'nvim_lsp', keyword_length = 2},
+        {name = 'nvim_lsp_signature_help', keyword_length = 2},
     },
 })
 
