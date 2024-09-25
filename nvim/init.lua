@@ -3,7 +3,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 vim.opt.sessionoptions='blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
-vim.opt.statusline = table.concat({' %F', '%r', '%=', '%{&fileformat}', '%{&fileencoding} '}, ' ')
+vim.opt.statusline = string.format(' %s %s %s %s %s ', '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
@@ -34,6 +34,15 @@ require('paq')({
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'doums/darcula'},
     {'savq/paq-nvim'},
+})
+
+vim.api.nvim_create_autocmd({'BufEnter', 'FocusGained'}, {
+    callback = function()
+        local branch = vim.fn.system('git branch --show-current 2> /dev/null | tr -d "\n"')
+        if branch ~= '' then
+            vim.opt.statusline = string.format(' %s %s %s %s %s %s ', branch, '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
+        end
+    end
 })
 
 local lsp_fix_imports_and_format = function()
