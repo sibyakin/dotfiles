@@ -36,6 +36,14 @@ require('paq')({
     {'savq/paq-nvim'},
 })
 
+local git_branch_in_status = function()
+    local branch = vim.b.gitsigns_head
+    if branch then
+        vim.opt.statusline = string.format(' %s %s %s %s %s %s ', branch, '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
+    end
+end
+vim.api.nvim_create_autocmd({'BufEnter', 'FocusGained'}, {callback = git_branch_in_status})
+
 local lsp_fix_imports_and_format = function()
     local params = vim.lsp.util.make_range_params()
     params.context = {only = {'source.organizeImports'}}
@@ -115,13 +123,6 @@ require('nvim-treesitter.configs').setup({
     ensure_installed = {'go', 'gomod'},
     highlight = {enable = true},
 })
-
-local git_branch_in_status = function()
-    local branch = vim.b.gitsigns_head
-    if branch then
-        vim.opt.statusline = string.format(' %s %s %s %s %s %s ', branch, '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
-    end
-end
 
 require('gitsigns').setup({
     signcolumn = false,
