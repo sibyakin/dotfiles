@@ -40,9 +40,11 @@ local git_branch_in_status = function()
     local branch = vim.b.gitsigns_head
     if branch then
         vim.opt.statusline = string.format(' %s %s %s %s %s %s ', branch, '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
+    else
+        vim.opt.statusline = string.format(' %s %s %s %s %s ', '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
     end
 end
-vim.api.nvim_create_autocmd({'BufEnter', 'FocusGained'}, {callback = git_branch_in_status})
+vim.api.nvim_create_autocmd({'BufNew', 'BufEnter', 'FocusGained'}, {callback = git_branch_in_status})
 
 local lsp_fix_imports_and_format = function()
     local params = vim.lsp.util.make_range_params()
