@@ -81,7 +81,7 @@ local lsp_on_attach = function()
         pattern = {'*.go', 'go.mod'},
         callback = lsp_show_diagnostics,
     })
-    vim.opt.updatetime = 250
+    vim.opt.updatetime = 750
 end
 
 require('lspconfig').gopls.setup({
@@ -145,6 +145,7 @@ local telescope_actions = require('telescope.actions')
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
+        file_ignore_patterns = {'^.git/'},
         mappings = {i = {['<ESC>'] = telescope_actions.close}},
         preview = false,
     }
@@ -153,5 +154,5 @@ telescope.load_extension('fzf')
 
 vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
-vim.keymap.set('n', 'ff', '<cmd>Telescope find_files<CR>')
+vim.keymap.set('n', 'ff', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
