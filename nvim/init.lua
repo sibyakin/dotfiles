@@ -2,8 +2,7 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
-vim.opt.sessionoptions='blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
-vim.opt.statusline = string.format(' %s %s %s %s %s ', '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
+vim.opt.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
@@ -12,10 +11,10 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
-vim.opt.scrolloff = 5
+vim.opt.scrolloff = 8
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
-vim.cmd.colorscheme('darcula')
+vim.cmd.colorscheme('mellow')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -33,19 +32,19 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'doums/darcula'},
+    {'mellow-theme/mellow.nvim'},
     {'savq/paq-nvim'},
 })
 
-local git_branch_in_status = function()
+local set_status = function()
     local branch = vim.b.gitsigns_head
     if branch then
-        vim.opt.statusline = string.format(' %s %s %s %s %s %s ', branch, '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
-    else
-        vim.opt.statusline = string.format(' %s %s %s %s %s ', '%F', '%r', '%=', '%{&fileformat}', '%{&fileencoding}')
+        vim.opt.statusline = string.format(' %s %s %s %s %s %s ', branch, '%F', '%r', '%=', '%{&ff}', '%{&fenc}')
+    else 
+        vim.opt.statusline = string.format(' %s %s %s %s %s ', '%F', '%r', '%=', '%{&ff}', '%{&fenc}')
     end
 end
-vim.api.nvim_create_autocmd({'BufNew', 'BufEnter', 'FocusGained'}, {callback = git_branch_in_status})
+vim.api.nvim_create_autocmd({'BufNew', 'BufEnter', 'FocusGained'}, {callback = set_status})
 
 local lsp_fix_imports_and_format = function()
     local params = vim.lsp.util.make_range_params()
@@ -128,10 +127,10 @@ require('nvim-treesitter.configs').setup({
 })
 
 require('gitsigns').setup({
-    signcolumn = false,
-    numhl = true,
+    signcolumn = true,
+    numhl = false,
     current_line_blame = true,
-    on_attach = git_branch_in_status,
+    on_attach = set_status,
 })
 
 mini_notify = require('mini.notify')
@@ -157,3 +156,4 @@ vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
+vim.keymap.set('n', 'cs', '<cmd>Telescope colorscheme enable_preview=true<CR>')
