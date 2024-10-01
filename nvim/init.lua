@@ -12,6 +12,7 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
+vim.opt.scrolloff = 5
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
 vim.cmd.colorscheme('darcula')
