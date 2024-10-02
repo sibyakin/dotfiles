@@ -127,8 +127,6 @@ require('nvim-treesitter.configs').setup({
 })
 
 require('gitsigns').setup({
-    signcolumn = true,
-    numhl = false,
     current_line_blame = true,
     on_attach = set_status,
 })
@@ -156,4 +154,3 @@ vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-vim.keymap.set('n', 'cs', '<cmd>Telescope colorscheme enable_preview=true<CR>')
