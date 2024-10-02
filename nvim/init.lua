@@ -14,7 +14,7 @@ vim.opt.mouse = 'cv'
 vim.opt.scrolloff = 8
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
-vim.cmd.colorscheme('mellow')
+vim.cmd.colorscheme('adwaita')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -32,7 +32,7 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'mellow-theme/mellow.nvim'},
+    {'Mofiqul/adwaita.nvim'},
     {'savq/paq-nvim'},
 })
 
