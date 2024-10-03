@@ -82,10 +82,21 @@ local lsp_on_attach = function()
         callback = lsp_show_diagnostics,
     })
     vim.opt.updatetime = 750
+    vim.lsp.inlay_hint.enable()
+    vim.cmd.hi('link LspInlayHint Comment')
 end
 
 require('lspconfig').gopls.setup({
-    settings = {gopls = {gofumpt = true}},
+    settings = {
+        gopls = {
+            gofumpt = true,
+            hints = {
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+            },
+        },
+    },
     on_attach = lsp_on_attach(),
 })
 
