@@ -14,7 +14,9 @@ vim.opt.mouse = 'cv'
 vim.opt.scrolloff = 8
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
-vim.cmd.colorscheme('vscode')
+vim.g.rasmus_italic_comments = false
+vim.g.rasmus_transparent = true
+vim.cmd.colorscheme('rasmus')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -32,7 +34,7 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'Mofiqul/vscode.nvim'},
+    {'kvrohit/rasmus.nvim'},
     {'savq/paq-nvim'},
 })
 
@@ -156,6 +158,7 @@ local notify_opts = {
 }
 vim.notify = mini_notify.make_notify(notify_opts)
 
+local telescope_layout = require('telescope.actions.layout')
 local telescope_actions = require('telescope.actions')
 local telescope = require('telescope')
 telescope.setup({
@@ -163,7 +166,12 @@ telescope.setup({
         layout_strategy = 'vertical',
         sorting_strategy = 'ascending',
         file_ignore_patterns = {'^.git/'},
-        mappings = {i = {['<ESC>'] = telescope_actions.close}},
+        mappings = {
+            i = {
+                ['<Esc>'] = telescope_actions.close,
+                ['<Tab>'] = telescope_layout.toggle_preview,
+            },
+        },
     },
 })
 telescope.load_extension('fzf')
