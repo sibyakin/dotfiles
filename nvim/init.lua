@@ -34,7 +34,7 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'kvrohit/rasmus.nvim'},
+    {'sibyakin/rasmus.nvim'},
     {'savq/paq-nvim'},
 })
 
@@ -92,11 +92,7 @@ require('lspconfig').gopls.setup({
     settings = {
         gopls = {
             gofumpt = true,
-            hints = {
-                compositeLiteralFields = true,
-                compositeLiteralTypes = true,
-                constantValues = true,
-            },
+            hints = {constantValues = true},
         },
     },
     on_attach = lsp_on_attach(),
