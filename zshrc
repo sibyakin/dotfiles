@@ -1,6 +1,6 @@
 setopt appendhistory completeinword histignorealldups histignorespace nonomatch
 autoload -Uz compinit; compinit
-alias ll="ls -lh"
+alias ll="ls -lha"
 alias vim="nvim"
 alias vi="nvim"
 bindkey "^[[3~" delete-char

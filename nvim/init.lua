@@ -14,7 +14,7 @@ vim.opt.mouse = 'cv'
 vim.opt.scrolloff = 8
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
-vim.cmd.colorscheme('adwaita')
+vim.cmd.colorscheme('vscode')
 
 require('paq')({
     {'neovim/nvim-lspconfig'},
@@ -32,7 +32,7 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'Mofiqul/adwaita.nvim'},
+    {'Mofiqul/vscode.nvim'},
     {'savq/paq-nvim'},
 })
 
@@ -137,9 +137,15 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 
+local gitsigns_on_attach = function()
+    vim.keymap.set('n', 'fg', '<cmd>Telescope git_bcommits<CR>')
+    vim.keymap.set('n', 'FG', '<cmd>Telescope git_commits<CR>')
+    set_status()
+end
+
 require('gitsigns').setup({
     current_line_blame = true,
-    on_attach = set_status,
+    on_attach = gitsigns_on_attach,
 })
 
 mini_notify = require('mini.notify')
@@ -154,14 +160,15 @@ local telescope_actions = require('telescope.actions')
 local telescope = require('telescope')
 telescope.setup({
     defaults = {
+        layout_strategy = 'vertical',
+        sorting_strategy = 'ascending',
         file_ignore_patterns = {'^.git/'},
         mappings = {i = {['<ESC>'] = telescope_actions.close}},
-        preview = false,
-    }
+    },
 })
 telescope.load_extension('fzf')
 
 vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
-vim.keymap.set('n', 'ff', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
+vim.keymap.set('n', 'ff', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
