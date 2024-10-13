@@ -34,6 +34,8 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+    {'tris203/precognition.nvim'},
+    {'m4xshen/hardtime.nvim'},
     {'sibyakin/rasmus.nvim'},
     {'savq/paq-nvim'},
 })
@@ -176,3 +178,6 @@ vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', 'ff', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
+
+require('precognition').setup({})
+require('hardtime').setup({restriction_mode = 'hint'})
