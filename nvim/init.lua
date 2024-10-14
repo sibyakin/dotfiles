@@ -34,8 +34,7 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'tris203/precognition.nvim'},
-    {'m4xshen/hardtime.nvim'},
+    {'debugloop/telescope-undo.nvim'},
     {'sibyakin/rasmus.nvim'},
     {'savq/paq-nvim'},
 })
@@ -70,13 +69,6 @@ end
 
 local lsp_on_attach = function()
     vim.diagnostic.config({signs = false, virtual_text = false})
-    vim.keymap.set('n', 'fd', '<cmd>Telescope diagnostics<CR>')
-    vim.keymap.set('n', 'FD', '<cmd>Telescope lsp_document_symbols<CR>')
-    vim.keymap.set('n', 'fa', '<cmd>Telescope lsp_incoming_calls<CR>')
-    vim.keymap.set('n', 'ft', '<cmd>Telescope lsp_definitions<CR>')
-    vim.keymap.set('n', 'FT', '<cmd>Telescope lsp_type_definitions<CR>')
-    vim.keymap.set('n', 'fr', '<cmd>Telescope lsp_references<CR>')
-    vim.keymap.set('n', 'FR', '<cmd>Telescope lsp_implementations<CR>')
     vim.api.nvim_create_autocmd('BufWritePre', {
         pattern = {'*.go'},
         callback = lsp_fix_imports_and_format,
@@ -137,15 +129,9 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 
-local gitsigns_on_attach = function()
-    vim.keymap.set('n', 'fg', '<cmd>Telescope git_bcommits<CR>')
-    vim.keymap.set('n', 'FG', '<cmd>Telescope git_commits<CR>')
-    set_status()
-end
-
 require('gitsigns').setup({
     current_line_blame = true,
-    on_attach = gitsigns_on_attach,
+    on_attach = set_status,
 })
 
 mini_notify = require('mini.notify')
@@ -173,11 +159,22 @@ telescope.setup({
     },
 })
 telescope.load_extension('fzf')
+telescope.load_extension('undo')
 
-vim.keymap.set('n', 'fb', '<cmd>Telescope buffers<CR>')
-vim.keymap.set('n', 'fc', '<cmd>Telescope oldfiles<CR>')
-vim.keymap.set('n', 'fs', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
-vim.keymap.set('n', 'ff', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
-
-require('precognition').setup({})
-require('hardtime').setup({restriction_mode = 'hint'})
+vim.g.mapleader = ' '
+vim.keymap.set('n', '<Leader>q', '<cmd>quit<CR>')
+vim.keymap.set('n', '<Leader>w', '<cmd>write<CR>')
+vim.keymap.set('n', '<Leader>b', '<cmd>Telescope buffers<CR>')
+vim.keymap.set('n', '<Leader>c', '<cmd>Telescope oldfiles<CR>')
+vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
+vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
+vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
+vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics<CR>')
+vim.keymap.set('n', '<Leader>D', '<cmd>Telescope lsp_document_symbols<CR>')
+vim.keymap.set('n', '<Leader>a', '<cmd>Telescope lsp_incoming_calls<CR>')
+vim.keymap.set('n', '<Leader>t', '<cmd>Telescope lsp_definitions<CR>')
+vim.keymap.set('n', '<Leader>T', '<cmd>Telescope lsp_type_definitions<CR>')
+vim.keymap.set('n', '<Leader>r', '<cmd>Telescope lsp_references<CR>')
+vim.keymap.set('n', '<Leader>R', '<cmd>Telescope lsp_implementations<CR>')
+vim.keymap.set('n', '<Leader>g', '<cmd>Telescope git_bcommits<CR>')
+vim.keymap.set('n', '<Leader>G', '<cmd>Telescope git_commits<CR>')
