@@ -79,7 +79,7 @@ local lsp_on_attach = function()
     })
     vim.opt.updatetime = 750
     vim.lsp.inlay_hint.enable()
-    vim.cmd.hi('link LspInlayHint Comment')
+    vim.api.nvim_set_hl(0, 'LspInlayHint', {link = 'Comment'})
 end
 
 require('lspconfig').gopls.setup({
@@ -129,9 +129,14 @@ require('nvim-treesitter.configs').setup({
     highlight = {enable = true},
 })
 
+local gitsigns_on_attach = function()
+    vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', {link = 'Comment'})
+    set_status()
+end
+
 require('gitsigns').setup({
     current_line_blame = true,
-    on_attach = set_status,
+    on_attach = gitsigns_on_attach,
 })
 
 mini_notify = require('mini.notify')
