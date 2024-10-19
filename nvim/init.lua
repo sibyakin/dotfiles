@@ -78,17 +78,10 @@ local lsp_on_attach = function()
         callback = lsp_show_diagnostics,
     })
     vim.opt.updatetime = 750
-    vim.lsp.inlay_hint.enable()
-    vim.api.nvim_set_hl(0, 'LspInlayHint', {link = 'Comment'})
 end
 
 require('lspconfig').gopls.setup({
-    settings = {
-        gopls = {
-            gofumpt = true,
-            hints = {constantValues = true},
-        },
-    },
+    settings = {gopls = {gofumpt = true}},
     on_attach = lsp_on_attach(),
 })
 
@@ -175,11 +168,11 @@ vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
 vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics<CR>')
-vim.keymap.set('n', '<Leader>D', '<cmd>Telescope lsp_document_symbols<CR>')
+vim.keymap.set('n', '<Leader>o', '<cmd>Telescope lsp_document_symbols<CR>')
 vim.keymap.set('n', '<Leader>a', '<cmd>Telescope lsp_incoming_calls<CR>')
 vim.keymap.set('n', '<Leader>t', '<cmd>Telescope lsp_definitions<CR>')
-vim.keymap.set('n', '<Leader>T', '<cmd>Telescope lsp_type_definitions<CR>')
+vim.keymap.set('n', '<Leader>y', '<cmd>Telescope lsp_type_definitions<CR>')
 vim.keymap.set('n', '<Leader>r', '<cmd>Telescope lsp_references<CR>')
-vim.keymap.set('n', '<Leader>R', '<cmd>Telescope lsp_implementations<CR>')
+vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>g', '<cmd>Telescope git_bcommits<CR>')
-vim.keymap.set('n', '<Leader>G', '<cmd>Telescope git_commits<CR>')
+vim.keymap.set('n', '<Leader>v', '<cmd>Telescope git_commits<CR>')
