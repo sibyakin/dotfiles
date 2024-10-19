@@ -11,6 +11,7 @@ vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.guicursor = ''
 vim.opt.mouse = 'cv'
+vim.opt.pumheight = 7
 vim.opt.scrolloff = 8
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
@@ -90,13 +91,12 @@ snippy.setup({})
 
 local cmp = require('cmp')
 cmp.setup({
-    performance = {throttle = 10, debounce = 10, max_view_entries = 15},
     preselect = cmp.PreselectMode.None,
     mapping = cmp.mapping{
-        [  '<Tab>'  ] = cmp.mapping.select_next_item(),
-        [ '<S-Tab>' ] = cmp.mapping.select_prev_item(),
-        [  '<C-d>'  ] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true}),
-        ['<C-Space>'] = cmp.mapping(snippy.expand_or_advance),
+        ['<C-Space>'] = snippy.expand_or_advance,
+        [  '<Tab>'  ] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Select}),
+        [ '<S-Tab>' ] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}),
+        [  '<C-d>'  ] = cmp.mapping.confirm({select = true}),
     },
     sorting = {
         comparators = {
@@ -107,11 +107,11 @@ cmp.setup({
         },
     },
     sources = {
-        {name = 'snippy'},
-        {name = 'nvim_lsp'},
-        {name = 'nvim_lsp_signature_help'},
+        {name = 'snippy', keyword_length = 2},
+        {name = 'nvim_lsp', keyword_length = 3},
+        {name = 'nvim_lsp_signature_help', keyword_length = 3},
     },
-    view = {entries = {selection_order = 'near_cursor', follow_cursor = true}},
+    view = {entries = {follow_cursor = true}},
 })
 
 require('auto-session').setup({})
