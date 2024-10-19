@@ -98,18 +98,23 @@ cmp.setup({
         [ '<S-Tab>' ] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}),
         [  '<C-d>'  ] = cmp.mapping.confirm({select = true}),
     },
+    matching = {
+        disallow_fuzzy_matching = true,
+        disallow_fullfuzzy_matching = true,
+        disallow_partial_matching = true,
+    },
     sorting = {
         comparators = {
             cmp.config.compare.recently_used,
             cmp.config.compare.exact,
             cmp.config.compare.length,
-            cmp.config.compare.sort_text,
+            cmp.config.compare.locality,
         },
     },
     sources = {
         {name = 'snippy', keyword_length = 2},
-        {name = 'nvim_lsp', keyword_length = 3},
-        {name = 'nvim_lsp_signature_help', keyword_length = 3},
+        {name = 'nvim_lsp', keyword_length = 2},
+        {name = 'nvim_lsp_signature_help', keyword_length = 2},
     },
     view = {entries = {follow_cursor = true}},
 })
