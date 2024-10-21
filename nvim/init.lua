@@ -36,6 +36,7 @@ require('paq')({
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'debugloop/telescope-undo.nvim'},
+    {'stevearc/dressing.nvim'},
     {'sibyakin/rasmus.nvim'},
     {'savq/paq-nvim'},
 })
@@ -160,6 +161,7 @@ telescope.setup({
             },
         },
     },
+    pickers = {diagnostics = {path_display = 'hidden'}},
 })
 telescope.load_extension('fzf')
 telescope.load_extension('undo')
@@ -172,7 +174,7 @@ vim.keymap.set('n', '<Leader>c', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
-vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics<CR>')
+vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true<CR>')
 vim.keymap.set('n', '<Leader>o', '<cmd>Telescope lsp_document_symbols<CR>')
 vim.keymap.set('n', '<Leader>a', '<cmd>Telescope lsp_incoming_calls<CR>')
 vim.keymap.set('n', '<Leader>t', '<cmd>Telescope lsp_definitions<CR>')
@@ -181,3 +183,5 @@ vim.keymap.set('n', '<Leader>r', '<cmd>Telescope lsp_references<CR>')
 vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>g', '<cmd>Telescope git_bcommits<CR>')
 vim.keymap.set('n', '<Leader>v', '<cmd>Telescope git_commits<CR>')
+vim.keymap.set('n', 'gra', vim.lsp.buf.code_action)
+vim.keymap.set('n', 'grn', vim.lsp.buf.rename)
