@@ -158,6 +158,8 @@ telescope.setup({
                 ['<Tab>'] = telescope_layout.toggle_preview,
             },
         },
+        preview = {hide_on_startup = true},
+        cache_picker = {num_pickers = 15},
     },
     pickers = {diagnostics = {path_display = 'hidden'}},
 })
