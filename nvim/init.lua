@@ -27,7 +27,6 @@ require('paq')({
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
     {'hrsh7th/cmp-nvim-lsp'},
-    {'hrsh7th/cmp-nvim-lsp-signature-help'},
     {'hrsh7th/nvim-cmp'},
     {'rmagatti/auto-session'},
     {'windwp/nvim-autopairs'},
@@ -113,9 +112,8 @@ cmp.setup({
         },
     },
     sources = {
-        {name = 'snippy', keyword_length = 2},
         {name = 'nvim_lsp', keyword_length = 2},
-        {name = 'nvim_lsp_signature_help', keyword_length = 2},
+        {name = 'snippy', keyword_length = 2},
     },
     view = {entries = {follow_cursor = true}},
 })
@@ -185,3 +183,4 @@ vim.keymap.set('n', '<Leader>g', '<cmd>Telescope git_bcommits<CR>')
 vim.keymap.set('n', '<Leader>v', '<cmd>Telescope git_commits<CR>')
 vim.keymap.set('n', 'gra', vim.lsp.buf.code_action)
 vim.keymap.set('n', 'grn', vim.lsp.buf.rename)
+vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
