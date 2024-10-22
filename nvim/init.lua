@@ -112,8 +112,8 @@ cmp.setup({
         },
     },
     sources = {
-        {name = 'nvim_lsp', keyword_length = 2},
         {name = 'snippy', keyword_length = 2},
+        {name = 'nvim_lsp', keyword_length = 2},
     },
     view = {entries = {follow_cursor = true}},
 })
