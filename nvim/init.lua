@@ -7,7 +7,6 @@ vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
 vim.opt.undofile = true
-vim.opt.signcolumn = 'yes:1'
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.guicursor = ''
@@ -41,24 +40,24 @@ require('paq')({
     {'savq/paq-nvim'},
 })
 
-local status = ' %F %r %= %{&ff} %{&fenc} '
+local status = '%F %r %= %{&ff} %{&fenc}'
 local set_status = function()
     local diag = ''
     if #vim.lsp.get_clients() > 0 then
-        local err_num = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR})
-        local warn_num = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN})
+        local err_num = #vim.diagnostic.get(nil, {severity = vim.diagnostic.severity.ERROR})
+        local warn_num = #vim.diagnostic.get(nil, {severity = vim.diagnostic.severity.WARN})
         if err_num > 0 and warn_num > 0 then 
-            diag = string.format(' [E:%s|W:%s]', err_num, warn_num)
+            diag = string.format('[ERR:%s|W:%s] ', err_num, warn_num)
         elseif err_num > 0 then 
-            diag = string.format(' [E:%s]', err_num)
+            diag = string.format('[ERR:%s] ', err_num)
         elseif warn_num > 0 then 
-            diag = string.format(' [W:%s]', warn_num)
+            diag = string.format('[WARN:%s] ', warn_num)
         end
     end
     local git_status = ''
     local branch = vim.b.gitsigns_head
     if branch then 
-        git_status = string.format(' [%s]', branch)
+        git_status = string.format('[%s] ', branch)
     end
     vim.opt.statusline = string.format('%s%s%s', git_status, diag, status)
 end
@@ -85,17 +84,7 @@ local lsp_show_diagnostics = function()
 end
 
 local lsp_on_attach = function()
-    vim.diagnostic.config({
-        signs = {
-            text = {
-                [vim.diagnostic.severity.ERROR] = '',
-                [vim.diagnostic.severity.WARN] = '',
-                [vim.diagnostic.severity.INFO] = '',
-                [vim.diagnostic.severity.HINT] = '',
-            },
-        },
-        virtual_text = false,
-    })
+    vim.diagnostic.config({signs = false, virtual_text = false})
     vim.api.nvim_create_autocmd({'BufWritePre'}, {
         pattern = {'*.go'},
         callback = lsp_fix_imports_and_format,
@@ -201,7 +190,7 @@ vim.keymap.set('n', '<Leader>c', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
-vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true<CR>')
+vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true severity_limit=2<CR>')
 vim.keymap.set('n', '<Leader>o', '<cmd>Telescope lsp_document_symbols<CR>')
 vim.keymap.set('n', '<Leader>a', '<cmd>Telescope lsp_incoming_calls<CR>')
 vim.keymap.set('n', '<Leader>t', '<cmd>Telescope lsp_definitions<CR>')
