@@ -47,7 +47,7 @@ local set_status = function()
         local err_num = #vim.diagnostic.get(nil, {severity = vim.diagnostic.severity.ERROR})
         local warn_num = #vim.diagnostic.get(nil, {severity = vim.diagnostic.severity.WARN})
         if err_num > 0 and warn_num > 0 then 
-            diag = string.format('[ERR:%s|W:%s] ', err_num, warn_num)
+            diag = string.format('[ERR:%s|WARN:%s] ', err_num, warn_num)
         elseif err_num > 0 then 
             diag = string.format('[ERR:%s] ', err_num)
         elseif warn_num > 0 then 
