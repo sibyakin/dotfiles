@@ -7,6 +7,7 @@ vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
 vim.opt.undofile = true
+vim.opt.signcolumn = 'yes:1'
 vim.opt.shiftwidth = 4
 vim.opt.tabstop = 4
 vim.opt.guicursor = ''
@@ -40,15 +41,30 @@ require('paq')({
     {'savq/paq-nvim'},
 })
 
+local status = ' %F %r %= %{&ff} %{&fenc} '
 local set_status = function()
-    local branch = vim.b.gitsigns_head
-    if branch then
-        vim.opt.statusline = string.format(' %s %s %s %s %s %s ', branch, '%F', '%r', '%=', '%{&ff}', '%{&fenc}')
-    else 
-        vim.opt.statusline = string.format(' %s %s %s %s %s ', '%F', '%r', '%=', '%{&ff}', '%{&fenc}')
+    local diag = ''
+    if #vim.lsp.get_clients() > 0 then
+        local err_num = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.ERROR})
+        local warn_num = #vim.diagnostic.get(0, {severity = vim.diagnostic.severity.WARN})
+        if err_num > 0 and warn_num > 0 then 
+            diag = string.format(' [E:%s|W:%s]', err_num, warn_num)
+        elseif err_num > 0 then 
+            diag = string.format(' [E:%s]', err_num)
+        elseif warn_num > 0 then 
+            diag = string.format(' [W:%s]', warn_num)
+        end
     end
+    local git_status = ''
+    local branch = vim.b.gitsigns_head
+    if branch then 
+        git_status = string.format(' [%s]', branch)
+    end
+    vim.opt.statusline = string.format('%s%s%s', git_status, diag, status)
 end
-vim.api.nvim_create_autocmd({'BufNew', 'BufEnter', 'FocusGained'}, {callback = set_status})
+vim.api.nvim_create_autocmd({'BufNew', 'BufEnter', 'FocusGained', 'DiagnosticChanged'}, {
+        callback = set_status,
+})
 
 local lsp_fix_imports_and_format = function()
     local params = vim.lsp.util.make_range_params()
@@ -69,12 +85,22 @@ local lsp_show_diagnostics = function()
 end
 
 local lsp_on_attach = function()
-    vim.diagnostic.config({signs = false, virtual_text = false})
-    vim.api.nvim_create_autocmd('BufWritePre', {
+    vim.diagnostic.config({
+        signs = {
+            text = {
+                [vim.diagnostic.severity.ERROR] = '',
+                [vim.diagnostic.severity.WARN] = '',
+                [vim.diagnostic.severity.INFO] = '',
+                [vim.diagnostic.severity.HINT] = '',
+            },
+        },
+        virtual_text = false,
+    })
+    vim.api.nvim_create_autocmd({'BufWritePre'}, {
         pattern = {'*.go'},
         callback = lsp_fix_imports_and_format,
     })
-    vim.api.nvim_create_autocmd('CursorHold', {
+    vim.api.nvim_create_autocmd({'CursorHold'}, {
         pattern = {'*.go', 'go.mod'},
         callback = lsp_show_diagnostics,
     })
@@ -150,6 +176,7 @@ local telescope = require('telescope')
 telescope.setup({
     defaults = {
         layout_strategy = 'vertical',
+        layout_config = {mirror = true, prompt_position = 'top'},
         sorting_strategy = 'ascending',
         file_ignore_patterns = {'^.git/'},
         mappings = {
@@ -185,4 +212,4 @@ vim.keymap.set('n', '<Leader>g', '<cmd>Telescope git_bcommits<CR>')
 vim.keymap.set('n', '<Leader>v', '<cmd>Telescope git_commits<CR>')
 vim.keymap.set('n', 'gra', vim.lsp.buf.code_action)
 vim.keymap.set('n', 'grn', vim.lsp.buf.rename)
-vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
+vim.keymap.set({'i', 'n'}, '<C-s>', vim.lsp.buf.signature_help)
