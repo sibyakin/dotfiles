@@ -22,7 +22,7 @@ vim.cmd.colorscheme('rasmus')
 require('paq')({
     {'neovim/nvim-lspconfig'},
     {'nvim-lua/plenary.nvim'},
-    {'nvim-tree/nvim-web-devicons'},
+    {'echasnovski/mini.icons'},
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
@@ -39,6 +39,9 @@ require('paq')({
     {'sibyakin/rasmus.nvim'},
     {'savq/paq-nvim'},
 })
+
+require('mini.icons').setup()
+MiniIcons.mock_nvim_web_devicons()
 
 local status = '%F %r %= %{&ff} %{&fenc}'
 local set_status = function()
@@ -183,22 +186,19 @@ telescope.load_extension('fzf')
 telescope.load_extension('undo')
 
 vim.g.mapleader = ' '
-vim.keymap.set('n', '<Leader>q', '<cmd>quit<CR>')
-vim.keymap.set('n', '<Leader>w', '<cmd>write<CR>')
+vim.keymap.set('n', '<Leader>q', '<cmd>bdelete<CR>')
 vim.keymap.set('n', '<Leader>b', '<cmd>Telescope buffers<CR>')
-vim.keymap.set('n', '<Leader>c', '<cmd>Telescope oldfiles<CR>')
+vim.keymap.set('n', '<Leader>o', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
 vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true severity_limit=2<CR>')
-vim.keymap.set('n', '<Leader>o', '<cmd>Telescope lsp_document_symbols<CR>')
-vim.keymap.set('n', '<Leader>a', '<cmd>Telescope lsp_incoming_calls<CR>')
-vim.keymap.set('n', '<Leader>t', '<cmd>Telescope lsp_definitions<CR>')
-vim.keymap.set('n', '<Leader>y', '<cmd>Telescope lsp_type_definitions<CR>')
+vim.keymap.set('n', '<Leader>y', '<cmd>Telescope lsp_document_symbols<CR>')
+vim.keymap.set('n', '<Leader>c', '<cmd>Telescope lsp_incoming_calls<CR>')
+vim.keymap.set('n', '<Leader>e', '<cmd>Telescope lsp_definitions<CR>')
+vim.keymap.set('n', '<Leader>t', '<cmd>Telescope lsp_type_definitions<CR>')
 vim.keymap.set('n', '<Leader>r', '<cmd>Telescope lsp_references<CR>')
 vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
-vim.keymap.set('n', '<Leader>g', '<cmd>Telescope git_bcommits<CR>')
-vim.keymap.set('n', '<Leader>v', '<cmd>Telescope git_commits<CR>')
-vim.keymap.set('n', 'gra', vim.lsp.buf.code_action)
-vim.keymap.set('n', 'grn', vim.lsp.buf.rename)
-vim.keymap.set({'i', 'n'}, '<C-s>', vim.lsp.buf.signature_help)
+vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
+vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
+vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
