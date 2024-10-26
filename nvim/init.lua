@@ -15,6 +15,7 @@ vim.opt.pumheight = 7
 vim.opt.scrolloff = 8
 vim.opt.laststatus = 3
 vim.opt.background = 'dark'
+vim.opt.statusline = '%F %r %= %{&ff} %{&fenc}'
 vim.g.rasmus_italic_comments = false
 vim.g.rasmus_transparent = true
 vim.cmd.colorscheme('rasmus')
@@ -22,7 +23,7 @@ vim.cmd.colorscheme('rasmus')
 require('paq')({
     {'neovim/nvim-lspconfig'},
     {'nvim-lua/plenary.nvim'},
-    {'echasnovski/mini.icons'},
+    {'nvim-tree/nvim-web-devicons'},
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
@@ -38,34 +39,6 @@ require('paq')({
     {'stevearc/dressing.nvim'},
     {'sibyakin/rasmus.nvim'},
     {'savq/paq-nvim'},
-})
-
-require('mini.icons').setup()
-MiniIcons.mock_nvim_web_devicons()
-
-local status = '%F %r %= %{&ff} %{&fenc}'
-local set_status = function()
-    local diag = ''
-    if #vim.lsp.get_clients() > 0 then
-        local err_num = #vim.diagnostic.get(nil, {severity = vim.diagnostic.severity.ERROR})
-        local warn_num = #vim.diagnostic.get(nil, {severity = vim.diagnostic.severity.WARN})
-        if err_num > 0 and warn_num > 0 then 
-            diag = string.format('[ERR:%s|WARN:%s] ', err_num, warn_num)
-        elseif err_num > 0 then 
-            diag = string.format('[ERR:%s] ', err_num)
-        elseif warn_num > 0 then 
-            diag = string.format('[WARN:%s] ', warn_num)
-        end
-    end
-    local git_status = ''
-    local branch = vim.b.gitsigns_head
-    if branch then 
-        git_status = string.format('[%s] ', branch)
-    end
-    vim.opt.statusline = string.format('%s%s%s', git_status, diag, status)
-end
-vim.api.nvim_create_autocmd({'BufNew', 'BufEnter', 'FocusGained', 'DiagnosticChanged'}, {
-        callback = set_status,
 })
 
 local lsp_fix_imports_and_format = function()
