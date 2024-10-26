@@ -1,35 +1,14 @@
-vim.g.loaded_python3_provider = 0
-vim.g.loaded_perl_provider = 0
-vim.g.loaded_ruby_provider = 0
-vim.g.loaded_node_provider = 0
-vim.opt.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
-vim.opt.expandtab = true
-vim.opt.ignorecase = true
-vim.opt.number = true
-vim.opt.undofile = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.guicursor = ''
-vim.opt.mouse = 'cv'
-vim.opt.pumheight = 7
-vim.opt.scrolloff = 8
-vim.opt.laststatus = 3
-vim.opt.background = 'dark'
-vim.opt.statusline = '%F %r %= %{&ff} %{&fenc}'
-vim.g.rasmus_italic_comments = false
-vim.g.rasmus_transparent = true
-vim.cmd.colorscheme('rasmus')
-
 require('paq')({
-    {'neovim/nvim-lspconfig'},
+    {'savq/paq-nvim'},
     {'nvim-lua/plenary.nvim'},
     {'nvim-tree/nvim-web-devicons'},
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'rmagatti/auto-session'},
+    {'neovim/nvim-lspconfig'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
     {'hrsh7th/cmp-nvim-lsp'},
     {'hrsh7th/nvim-cmp'},
-    {'rmagatti/auto-session'},
     {'windwp/nvim-autopairs'},
     {'lewis6991/gitsigns.nvim'},
     {'echasnovski/mini.notify'},
@@ -38,8 +17,14 @@ require('paq')({
     {'debugloop/telescope-undo.nvim'},
     {'stevearc/dressing.nvim'},
     {'sibyakin/rasmus.nvim'},
-    {'savq/paq-nvim'},
 })
+
+require('nvim-treesitter.configs').setup({
+    ensure_installed = {'go', 'gomod'},
+    highlight = {enable = true},
+})
+
+require('auto-session').setup({})
 
 local lsp_fix_imports_and_format = function()
     local params = vim.lsp.util.make_range_params()
@@ -109,23 +94,9 @@ cmp.setup({
     view = {entries = {follow_cursor = true}},
 })
 
-require('auto-session').setup({})
 require('nvim-autopairs').setup({})
 
-require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'gomod'},
-    highlight = {enable = true},
-})
-
-local gitsigns_on_attach = function()
-    vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', {link = 'Comment'})
-    set_status()
-end
-
-require('gitsigns').setup({
-    current_line_blame = true,
-    on_attach = gitsigns_on_attach,
-})
+require('gitsigns').setup({current_line_blame = true})
 
 mini_notify = require('mini.notify')
 mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
@@ -158,6 +129,26 @@ telescope.setup({
 telescope.load_extension('fzf')
 telescope.load_extension('undo')
 
+vim.opt.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
+vim.opt.expandtab = true
+vim.opt.ignorecase = true
+vim.opt.number = true
+vim.opt.undofile = true
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+vim.opt.guicursor = ''
+vim.opt.mouse = 'cv'
+vim.opt.pumheight = 7
+vim.opt.scrolloff = 8
+vim.opt.laststatus = 3
+vim.opt.background = 'dark'
+vim.opt.statusline = '%F %r %= %{&ff} %{&fenc}'
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_node_provider = 0
+vim.g.rasmus_italic_comments = false
+vim.g.rasmus_transparent = true
 vim.g.mapleader = ' '
 vim.keymap.set('n', '<Leader>q', '<cmd>bdelete<CR>')
 vim.keymap.set('n', '<Leader>b', '<cmd>Telescope buffers<CR>')
@@ -175,3 +166,5 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
+vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', {link = 'Comment'})
+vim.cmd.colorscheme('rasmus')
