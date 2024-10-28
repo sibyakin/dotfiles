@@ -130,6 +130,7 @@ telescope.load_extension('fzf')
 telescope.load_extension('undo')
 
 vim.opt.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
+vim.opt.showtabline = 0
 vim.opt.expandtab = true
 vim.opt.ignorecase = true
 vim.opt.number = true
@@ -156,7 +157,7 @@ vim.keymap.set('n', '<Leader>o', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
-vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true severity_limit=2<CR>')
+vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true<CR>')
 vim.keymap.set('n', '<Leader>y', '<cmd>Telescope lsp_document_symbols<CR>')
 vim.keymap.set('n', '<Leader>c', '<cmd>Telescope lsp_incoming_calls<CR>')
 vim.keymap.set('n', '<Leader>e', '<cmd>Telescope lsp_definitions<CR>')
@@ -166,5 +167,5 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
-vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', {link = 'Comment'})
 vim.cmd.colorscheme('rasmus')
+vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', {link = 'Comment'})
