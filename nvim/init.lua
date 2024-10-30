@@ -8,7 +8,7 @@ require('paq')({
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
     {'hrsh7th/cmp-nvim-lsp'},
-    {'hrsh7th/nvim-cmp'},
+    {'iguanacucumber/magazine.nvim', as = 'nvim-cmp'},
     {'windwp/nvim-autopairs'},
     {'lewis6991/gitsigns.nvim'},
     {'echasnovski/mini.notify'},
@@ -99,7 +99,11 @@ require('nvim-autopairs').setup({})
 require('gitsigns').setup({current_line_blame = true})
 
 mini_notify = require('mini.notify')
-mini_notify.setup({window = {winblend = 0, max_width_share = 0.50}})
+mini_notify.setup({
+    content = {format = function(notif) return notif.msg end},
+    window = {winblend = 0, max_width_share = 0.60},
+    lsp_progress = {enable = false},
+})
 local notify_st = {duration = 15000, hl_group = 'Float'}
 local notify_opts = {
     ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st
