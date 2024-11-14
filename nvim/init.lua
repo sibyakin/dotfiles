@@ -54,11 +54,20 @@ local lsp_on_attach = function()
         pattern = {'*.go', 'go.mod'},
         callback = lsp_show_diagnostics,
     })
-    vim.opt.updatetime = 750
+    vim.o.updatetime = 750
 end
 
 require('lspconfig').gopls.setup({
-    settings = {gopls = {gofumpt = true}},
+    settings = {
+        gopls = {
+            analyses = {
+                shadow = true,
+                unusedvariable = true,
+                useany = true,
+            },
+            gofumpt = true,
+        },
+    },
     on_attach = lsp_on_attach(),
 })
 
@@ -104,7 +113,7 @@ mini_notify.setup({
     window = {winblend = 0, max_width_share = 0.60},
     lsp_progress = {enable = false},
 })
-local notify_st = {duration = 15000, hl_group = 'Float'}
+local notify_st = {duration = 10000, hl_group = 'Float'}
 local notify_opts = {
     ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st
 }
@@ -133,21 +142,21 @@ telescope.setup({
 telescope.load_extension('fzf')
 telescope.load_extension('undo')
 
-vim.opt.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
-vim.opt.showtabline = 0
-vim.opt.expandtab = true
-vim.opt.ignorecase = true
-vim.opt.number = true
-vim.opt.undofile = true
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
-vim.opt.guicursor = ''
-vim.opt.mouse = 'cv'
-vim.opt.pumheight = 7
-vim.opt.scrolloff = 8
-vim.opt.laststatus = 3
-vim.opt.background = 'dark'
-vim.opt.statusline = '%F %r %= %{&ff} %{&fenc}'
+vim.o.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
+vim.o.showtabline = 0
+vim.o.expandtab = true
+vim.o.ignorecase = true
+vim.o.number = true
+vim.o.undofile = true
+vim.o.shiftwidth = 4
+vim.o.tabstop = 4
+vim.o.guicursor = ''
+vim.o.mouse = 'cv'
+vim.o.pumheight = 7
+vim.o.scrolloff = 8
+vim.o.laststatus = 3
+vim.o.background = 'dark'
+vim.o.statusline = '%F %r %= %{&ff} %{&fenc}'
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
