@@ -14,6 +14,7 @@ require('paq')({
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
+    {'nvim-telescope/telescope-file-browser.nvim'},
     {'debugloop/telescope-undo.nvim'},
     {'stevearc/dressing.nvim'},
     {'sibyakin/rasmus.nvim'},
@@ -57,19 +58,7 @@ local lsp_on_attach = function()
     vim.o.updatetime = 750
 end
 
-require('lspconfig').gopls.setup({
-    settings = {
-        gopls = {
-            analyses = {
-                shadow = true,
-                unusedvariable = true,
-                useany = true,
-            },
-            gofumpt = true,
-        },
-    },
-    on_attach = lsp_on_attach(),
-})
+require('lspconfig').gopls.setup({on_attach = lsp_on_attach})
 
 local snippy = require('snippy')
 snippy.setup({})
@@ -83,24 +72,17 @@ cmp.setup({
         [ '<S-Tab>' ] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}),
         [  '<C-d>'  ] = cmp.mapping.confirm({select = true}),
     },
-    matching = {
-        disallow_fuzzy_matching = true,
-        disallow_fullfuzzy_matching = true,
-        disallow_partial_matching = true,
-    },
     sorting = {
         comparators = {
             cmp.config.compare.recently_used,
             cmp.config.compare.exact,
             cmp.config.compare.length,
-            cmp.config.compare.locality,
         },
     },
     sources = {
         {name = 'snippy', keyword_length = 2},
         {name = 'nvim_lsp', keyword_length = 2},
     },
-    view = {entries = {follow_cursor = true}},
 })
 
 require('nvim-autopairs').setup({})
@@ -141,6 +123,7 @@ telescope.setup({
 })
 telescope.load_extension('fzf')
 telescope.load_extension('undo')
+telescope.load_extension('file_browser')
 
 vim.o.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
 vim.o.showtabline = 0
@@ -151,7 +134,6 @@ vim.o.undofile = true
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.guicursor = ''
-vim.o.mouse = 'cv'
 vim.o.pumheight = 7
 vim.o.scrolloff = 8
 vim.o.laststatus = 3
@@ -164,12 +146,17 @@ vim.g.loaded_node_provider = 0
 vim.g.rasmus_italic_comments = false
 vim.g.rasmus_transparent = true
 vim.g.mapleader = ' '
+vim.keymap.set('n', 'HN', '<cmd>Gitsigns next_hunk<CR><CR>')
+vim.keymap.set('n', 'HP', '<cmd>Gitsigns prev_hunk<CR><CR>')
+vim.keymap.set('n', 'HD', '<cmd>Gitsigns diffthis<CR>')
+vim.keymap.set('n', 'HR', '<cmd>Gitsigns reset_hunk<CR>')
 vim.keymap.set('n', '<Leader>q', '<cmd>bdelete<CR>')
 vim.keymap.set('n', '<Leader>b', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', '<Leader>o', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
+vim.keymap.set('n', '<Leader>w', '<cmd>Telescope file_browser<CR>')
 vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true<CR>')
 vim.keymap.set('n', '<Leader>y', '<cmd>Telescope lsp_document_symbols<CR>')
 vim.keymap.set('n', '<Leader>c', '<cmd>Telescope lsp_incoming_calls<CR>')
