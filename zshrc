@@ -4,6 +4,7 @@ alias ll="ls -lha"
 alias vim="nvim"
 alias vi="nvim"
 bindkey "^[[3~" delete-char
+bindkey "^R" history-incremental-search-backward
 export PS1="%n@%m%d> "
 export EDITOR=nvim
 export HISTSIZE=2000
