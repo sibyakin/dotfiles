@@ -17,7 +17,7 @@ require('paq')({
     {'nvim-telescope/telescope-file-browser.nvim'},
     {'debugloop/telescope-undo.nvim'},
     {'stevearc/dressing.nvim'},
-    {'sibyakin/rasmus.nvim'},
+    {'doums/darcula'},
 })
 
 require('nvim-treesitter.configs').setup({
@@ -58,7 +58,8 @@ local lsp_on_attach = function()
     vim.o.updatetime = 750
 end
 
-require('lspconfig').gopls.setup({on_attach = lsp_on_attach})
+lsp = require('lspconfig')
+lsp.gopls.setup({on_attach = lsp_on_attach})
 
 local snippy = require('snippy')
 snippy.setup({})
@@ -72,11 +73,16 @@ cmp.setup({
         [ '<S-Tab>' ] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}),
         [  '<C-d>'  ] = cmp.mapping.confirm({select = true}),
     },
+    matching = {
+        disallow_fuzzy_matching = true,
+        disallow_fullfuzzy_matching = true,
+        disallow_partial_matching = true,
+    },
     sorting = {
         comparators = {
-            cmp.config.compare.recently_used,
             cmp.config.compare.exact,
             cmp.config.compare.length,
+            cmp.config.compare.sort_text,
         },
     },
     sources = {
@@ -87,15 +93,14 @@ cmp.setup({
 
 require('nvim-autopairs').setup({})
 
-require('gitsigns').setup({current_line_blame = true})
+require('gitsigns').setup({current_line_blame = true, current_line_blame_formatter = '<summary> <author_time:%R> <author>'})
 
 mini_notify = require('mini.notify')
 mini_notify.setup({
     content = {format = function(notif) return notif.msg end},
     window = {winblend = 0, max_width_share = 0.60},
-    lsp_progress = {enable = false},
 })
-local notify_st = {duration = 10000, hl_group = 'Float'}
+local notify_st = {duration = 10000}
 local notify_opts = {
     ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st
 }
@@ -116,7 +121,6 @@ telescope.setup({
                 ['<Tab>'] = telescope_layout.toggle_preview,
             },
         },
-        preview = {hide_on_startup = true},
         cache_picker = {num_pickers = 15},
     },
     pickers = {diagnostics = {path_display = 'hidden'}},
@@ -143,8 +147,6 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
-vim.g.rasmus_italic_comments = false
-vim.g.rasmus_transparent = true
 vim.g.mapleader = ' '
 vim.keymap.set('n', 'HN', '<cmd>Gitsigns next_hunk<CR><CR>')
 vim.keymap.set('n', 'HP', '<cmd>Gitsigns prev_hunk<CR><CR>')
@@ -167,5 +169,6 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
-vim.cmd.colorscheme('rasmus')
-vim.api.nvim_set_hl(0, 'GitSignsCurrentLineBlame', {link = 'Comment'})
+vim.cmd.colorscheme('darcula')
+vim.api.nvim_set_hl(0, 'SignColumn', {ctermbg = none})
+vim.api.nvim_set_hl(0, 'LineNr', {ctermbg = none})
