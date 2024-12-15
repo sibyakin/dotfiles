@@ -1,5 +1,6 @@
-setopt appendhistory completeinword histignorealldups histignorespace nonomatch
 autoload -Uz compinit; compinit
+set -o emacs
+setopt appendhistory completeinword histignorealldups histignorespace nonomatch
 alias ll="ls -lha"
 alias vim="nvim"
 alias vi="nvim"

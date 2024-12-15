@@ -7,7 +7,7 @@ require('paq')({
     {'neovim/nvim-lspconfig'},
     {'dcampos/nvim-snippy'},
     {'dcampos/cmp-snippy'},
-    {'hrsh7th/cmp-nvim-lsp'},
+    {'iguanacucumber/mag-nvim-lsp', as = 'cmp-nvim-lsp'},
     {'iguanacucumber/magazine.nvim', as = 'nvim-cmp'},
     {'windwp/nvim-autopairs'},
     {'lewis6991/gitsigns.nvim'},
@@ -138,11 +138,12 @@ vim.o.undofile = true
 vim.o.shiftwidth = 4
 vim.o.tabstop = 4
 vim.o.guicursor = ''
-vim.o.pumheight = 7
-vim.o.scrolloff = 8
+vim.o.pumheight = 9
+vim.o.scrolloff = 10
 vim.o.laststatus = 3
 vim.o.background = 'dark'
 vim.o.statusline = '%F %r %= %{&ff} %{&fenc}'
+vim.o.mouse = 'cv'
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
