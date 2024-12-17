@@ -93,7 +93,7 @@ cmp.setup({
 
 require('nvim-autopairs').setup({})
 
-require('gitsigns').setup({current_line_blame = true, current_line_blame_formatter = '<summary> <author_time:%R> <author>'})
+require('gitsigns').setup({current_line_blame = true, current_line_blame_formatter = '<author_time:%R>, <author>'})
 
 mini_notify = require('mini.notify')
 mini_notify.setup({
@@ -143,6 +143,7 @@ vim.o.scrolloff = 10
 vim.o.laststatus = 3
 vim.o.background = 'dark'
 vim.o.statusline = '%F %r %= %{&ff} %{&fenc}'
+vim.o.clipboard = 'unnamedplus'
 vim.o.mouse = 'cv'
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
