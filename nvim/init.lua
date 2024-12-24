@@ -48,18 +48,20 @@ end
 local lsp_on_attach = function()
     vim.diagnostic.config({signs = false, virtual_text = false})
     vim.api.nvim_create_autocmd({'BufWritePre'}, {
-        pattern = {'*.go'},
+        pattern = {'*.go', '*.rs'},
         callback = lsp_fix_imports_and_format,
     })
     vim.api.nvim_create_autocmd({'CursorHold'}, {
-        pattern = {'*.go', 'go.mod'},
+        pattern = {'*.go', 'go.mod', '*.lua', '*.rs'},
         callback = lsp_show_diagnostics,
     })
     vim.o.updatetime = 750
 end
 
-lsp = require('lspconfig')
+local lsp = require('lspconfig')
 lsp.gopls.setup({on_attach = lsp_on_attach})
+lsp.lua_ls.setup({on_attach = lsp_on_attach})
+lsp.rust_analyzer.setup({on_attach = lsp_on_attach})
 
 local snippy = require('snippy')
 snippy.setup({})
@@ -95,12 +97,12 @@ require('nvim-autopairs').setup({})
 
 require('gitsigns').setup({current_line_blame = true, current_line_blame_formatter = '<author_time:%R>, <author>'})
 
-mini_notify = require('mini.notify')
+local mini_notify = require('mini.notify')
 mini_notify.setup({
     content = {format = function(notif) return notif.msg end},
-    window = {winblend = 0, max_width_share = 0.60},
+    window = {winblend = 0, max_width_share = 0.50},
 })
-local notify_st = {duration = 10000}
+local notify_st = {duration = 15000, hl_group = 'Float'}
 local notify_opts = {
     ERROR = notify_st, WARN = notify_st, INFO = notify_st, DEBUG = notify_st, TRACE = notify_st
 }
