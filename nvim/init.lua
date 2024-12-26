@@ -21,7 +21,7 @@ require('paq')({
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'gomod'},
+    ensure_installed = {'go', 'gomod', 'javascript', 'json', 'vue'},
     highlight = {enable = true},
 })
 
