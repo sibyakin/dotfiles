@@ -21,7 +21,7 @@ require('paq')({
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'gomod', 'javascript', 'json', 'vue'},
+    ensure_installed = {'go', 'gomod', 'javascript', 'json', 'rust', 'vue'},
     highlight = {enable = true},
 })
 
@@ -144,7 +144,7 @@ vim.o.pumheight = 9
 vim.o.scrolloff = 10
 vim.o.laststatus = 3
 vim.o.background = 'dark'
-vim.o.statusline = '%F %r %= %{&ff} %{&fenc}'
+vim.o.statusline = '%F%r %= %L lines %{&ff} %{&fenc}'
 vim.o.clipboard = 'unnamedplus'
 vim.o.mouse = 'cv'
 vim.g.loaded_python3_provider = 0
