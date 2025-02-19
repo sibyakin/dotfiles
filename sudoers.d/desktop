@@ -1,0 +1,1 @@
+%wheel ALL=(ALL) NOPASSWD: /usr/sbin/nvme, /usr/bin/dnf, /usr/bin/fwupdmgr, /usr/bin/systemctl, /usr/sbin/xfs_fsr, /usr/bin/nvtop, /usr/bin/firewall-cmd, /usr/sbin/ss, /usr/local/bin/tailscaled, /usr/bin/nmap, /usr/bin/stress-ng, /usr/bin/qemu-system-x86_64, /usr/sbin/lshw, /usr/sbin/smartctl, /usr/sbin/lspci
