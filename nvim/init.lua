@@ -75,11 +75,6 @@ cmp.setup({
         [ '<S-Tab>' ] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}),
         [  '<C-d>'  ] = cmp.mapping.confirm({select = true}),
     },
-    matching = {
-        disallow_fuzzy_matching = true,
-        disallow_fullfuzzy_matching = true,
-        disallow_partial_matching = true,
-    },
     sorting = {
         comparators = {
             cmp.config.compare.exact,
