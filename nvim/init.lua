@@ -46,7 +46,7 @@ local lsp_show_diagnostics = function()
 end
 
 local lsp_on_attach = function()
-    vim.diagnostic.config({signs = false, virtual_text = false})
+    vim.diagnostic.config({signs = false, virtual_text = false, underline = {severity = {min = vim.diagnostic.severity.ERROR}}})
     vim.api.nvim_create_autocmd({'BufWritePre'}, {
         pattern = {'*.go', '*.rs'},
         callback = lsp_fix_imports_and_format,
@@ -172,3 +172,4 @@ vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
 vim.cmd.colorscheme('darcula')
 vim.api.nvim_set_hl(0, 'SignColumn', {ctermbg = none})
 vim.api.nvim_set_hl(0, 'LineNr', {ctermbg = none})
+vim.lsp.set_log_level("OFF")
