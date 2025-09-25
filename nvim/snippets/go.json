@@ -1,0 +1,52 @@
+{
+    "package main and main function": {
+        "prefix": "pkgm",
+        "body": "package main\n\nfunc main() {\n\t$0\n}",
+        "description": "Snippet for main package & function"
+    },
+    "main function": {
+        "prefix": "main",
+        "body": "func main() {\n\t$1\n}",
+        "description": "Snippet for main function"
+    },
+    "function declaration": {
+        "prefix": "fun",
+        "body": "func $1($2) $3 {\n\t$0\n}",
+        "description": "Snippet for function declaration"
+    },
+    "method declaration": {
+        "prefix": "fum",
+        "body": "func (${1:receiver} ${2:type}) ${3:method}($4) $5 {\n\t$0\n}",
+        "description": "Snippet for method declaration"
+    },
+    "switch statement": {
+        "prefix": "swi",
+        "body": "switch ${1:expression} {\ncase ${2:condition}:\n\t$0\n}",
+        "description": "Snippet for switch statement"
+    },
+    "select statement": {
+        "prefix": "sel",
+        "body": "select {\ncase ${1:condition}:\n\t$0\n}",
+        "description": "Snippet for select statement"
+    },
+    "for range statement": {
+        "prefix": "for",
+        "body": "for ${1:_, }${2:v} := range ${3:v} {\n\t$0\n}",
+        "description": "Snippet for a for range loop"
+    },
+    "if err != nil; return err": {
+        "prefix": "err",
+        "body": "if err != nil {\n\treturn err\n}\n$0",
+        "description": "Snippet for if err != nil"
+    },
+    "if err != nil": {
+        "prefix": "ern",
+        "body": "if err != nil {\n\t$1\n}\n$0",
+        "description": "Snippet for if err != nil"
+    },
+    "goroutine anonymous function": {
+        "prefix": "go",
+        "body": "go func($1) {\n\t$0\n}($2)",
+        "description": "Snippet for anonymous goroutine declaration"
+    }
+}

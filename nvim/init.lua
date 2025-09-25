@@ -4,12 +4,8 @@ require('paq')({
     {'nvim-tree/nvim-web-devicons'},
     {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
     {'rmagatti/auto-session'},
-    {'neovim/nvim-lspconfig'},
-    {'dcampos/nvim-snippy'},
-    {'dcampos/cmp-snippy'},
-    {'iguanacucumber/mag-nvim-lsp', as = 'cmp-nvim-lsp'},
-    {'iguanacucumber/magazine.nvim', as = 'nvim-cmp'},
     {'windwp/nvim-autopairs'},
+    {'saghen/blink.cmp'},
     {'lewis6991/gitsigns.nvim'},
     {'echasnovski/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
@@ -21,14 +17,14 @@ require('paq')({
 })
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = {'go', 'gomod', 'javascript', 'json', 'rust', 'vue'},
+    ensure_installed = {'go', 'gomod', 'json', 'rust'},
     highlight = {enable = true},
 })
 
 require('auto-session').setup({})
 
 local lsp_fix_imports_and_format = function()
-    local params = vim.lsp.util.make_range_params()
+    local params = vim.lsp.util.make_range_params(nil, 'utf-8')
     params.context = {only = {'source.organizeImports'}}
     local result = vim.lsp.buf_request_sync(0, 'textDocument/codeAction', params, 3000)
     for _, res in pairs(result or {}) do
@@ -46,7 +42,7 @@ local lsp_show_diagnostics = function()
 end
 
 local lsp_on_attach = function()
-    vim.diagnostic.config({signs = false, virtual_text = false, underline = {severity = {min = vim.diagnostic.severity.ERROR}}})
+    vim.diagnostic.config({signs = false, virtual_text = false})
     vim.api.nvim_create_autocmd({'BufWritePre'}, {
         pattern = {'*.go', '*.rs'},
         callback = lsp_fix_imports_and_format,
@@ -58,34 +54,41 @@ local lsp_on_attach = function()
     vim.o.updatetime = 750
 end
 
-local lsp = require('lspconfig')
-lsp.gopls.setup({on_attach = lsp_on_attach})
-lsp.lua_ls.setup({on_attach = lsp_on_attach})
-lsp.rust_analyzer.setup({on_attach = lsp_on_attach})
-
-local snippy = require('snippy')
-snippy.setup({})
-
-local cmp = require('cmp')
-cmp.setup({
-    preselect = cmp.PreselectMode.None,
-    mapping = cmp.mapping{
-        ['<C-Space>'] = snippy.expand_or_advance,
-        [  '<Tab>'  ] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior.Select}),
-        [ '<S-Tab>' ] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior.Select}),
-        [  '<C-d>'  ] = cmp.mapping.confirm({select = true}),
-    },
-    sorting = {
-        comparators = {
-            cmp.config.compare.exact,
-            cmp.config.compare.length,
-            cmp.config.compare.sort_text,
+vim.lsp.config('lua_ls', {
+    filetypes = {'lua'},
+    cmd = {'lua-language-server'},
+    on_init = lsp_on_attach,
+    settings = {
+        Lua = {
+            diagnostics = {globals = {'vim', 'none'}},
+            runtime = {version = 'LuaJIT'},
         },
     },
-    sources = {
-        {name = 'snippy', keyword_length = 2},
-        {name = 'nvim_lsp', keyword_length = 2},
+})
+vim.lsp.config('gopls', {
+    filetypes = {'go'},
+    cmd = {'gopls'},
+    on_init = lsp_on_attach,
+})
+vim.lsp.config('rust_analyzer', {
+    filetypes = {'rust'},
+    cmd = {'rust-analyzer'},
+    on_init = lsp_on_attach,
+})
+vim.lsp.enable({'lua_ls', 'gopls', 'rust_analyzer'})
+
+require('blink.cmp').setup({
+    keymap = {
+        preset = 'enter',
+        ['<C-Space>'] = {'snippet_forward', 'fallback'},
+        [  '<Tab>'  ] = {'select_next', 'snippet_forward', 'fallback'},
+        [ '<S-Tab>' ] = {'select_prev', 'snippet_backward', 'fallback'},
+        [  '<C-d>'  ] = {'select_and_accept', 'fallback'},
     },
+    completion = {documentation = {auto_show = true}},
+    signature = {enabled = true},
+    fuzzy = {implementation = 'lua'},
+    sources = {default = {'snippets', 'lsp'}},
 })
 
 require('nvim-autopairs').setup({})
@@ -172,4 +175,4 @@ vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
 vim.cmd.colorscheme('darcula')
 vim.api.nvim_set_hl(0, 'SignColumn', {ctermbg = none})
 vim.api.nvim_set_hl(0, 'LineNr', {ctermbg = none})
-vim.lsp.set_log_level("OFF")
+vim.lsp.set_log_level('OFF')
