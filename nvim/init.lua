@@ -11,9 +11,8 @@ require('paq')({
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'nvim-telescope/telescope-file-browser.nvim'},
-    {'debugloop/telescope-undo.nvim'},
     {'stevearc/dressing.nvim'},
-    {'doums/darcula'},
+    {'pbrisbin/vim-colors-off'},
 })
 
 require('nvim-treesitter.configs').setup({
@@ -126,7 +125,6 @@ telescope.setup({
     pickers = {diagnostics = {path_display = 'hidden'}},
 })
 telescope.load_extension('fzf')
-telescope.load_extension('undo')
 telescope.load_extension('file_browser')
 
 vim.o.sessionoptions='buffers,curdir,winsize,winpos,localoptions'
@@ -149,6 +147,7 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
+vim.g.colors_off_a_little = 1
 vim.g.mapleader = ' '
 vim.keymap.set('n', 'HN', '<cmd>Gitsigns next_hunk<CR><CR>')
 vim.keymap.set('n', 'HP', '<cmd>Gitsigns prev_hunk<CR><CR>')
@@ -160,7 +159,6 @@ vim.keymap.set('n', '<Leader>o', '<cmd>Telescope oldfiles<CR>')
 vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>m', '<cmd>Telescope marks<CR>')
-vim.keymap.set('n', '<Leader>h', '<cmd>Telescope undo<CR>')
 vim.keymap.set('n', '<Leader>w', '<cmd>Telescope file_browser<CR>')
 vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true<CR>')
 vim.keymap.set('n', '<Leader>y', '<cmd>Telescope lsp_document_symbols<CR>')
@@ -172,7 +170,6 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
-vim.cmd.colorscheme('darcula')
+vim.cmd.colorscheme('off')
 vim.api.nvim_set_hl(0, 'SignColumn', {ctermbg = none})
-vim.api.nvim_set_hl(0, 'LineNr', {ctermbg = none})
 vim.lsp.set_log_level('OFF')
