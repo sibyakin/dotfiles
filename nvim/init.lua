@@ -12,7 +12,7 @@ require('paq')({
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'nvim-telescope/telescope-file-browser.nvim'},
     {'stevearc/dressing.nvim'},
-    {'pbrisbin/vim-colors-off'},
+    {'chriskempson/base16-vim'},
 })
 
 require('nvim-treesitter.configs').setup({
@@ -139,7 +139,7 @@ vim.o.guicursor = ''
 vim.o.pumheight = 9
 vim.o.scrolloff = 10
 vim.o.laststatus = 3
-vim.o.background = 'dark'
+vim.o.background = 'light'
 vim.o.statusline = '%F%r %= %L lines %{&ff} %{&fenc}'
 vim.o.clipboard = 'unnamedplus'
 vim.o.mouse = 'cv'
@@ -170,6 +170,6 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
-vim.cmd.colorscheme('off')
+vim.cmd.colorscheme('base16-one-light')
 vim.api.nvim_set_hl(0, 'SignColumn', {ctermbg = none})
 vim.lsp.set_log_level('OFF')
