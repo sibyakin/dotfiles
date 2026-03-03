@@ -7,15 +7,15 @@ require('paq')({
     {'windwp/nvim-autopairs'},
     {'saghen/blink.cmp'},
     {'lewis6991/gitsigns.nvim'},
-    {'echasnovski/mini.notify'},
+    {'nvim-mini/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'nvim-telescope/telescope-file-browser.nvim'},
     {'stevearc/dressing.nvim'},
-    {'chriskempson/base16-vim'},
+    {'huyvohcmc/atlas.vim'},
 })
 
-require('nvim-treesitter.configs').setup({
+require('nvim-treesitter').setup({
     ensure_installed = {'go', 'gomod', 'json', 'rust'},
     highlight = {enable = true},
 })
@@ -47,7 +47,7 @@ local lsp_on_attach = function()
         callback = lsp_fix_imports_and_format,
     })
     vim.api.nvim_create_autocmd({'CursorHold'}, {
-        pattern = {'*.go', 'go.mod', '*.lua', '*.rs'},
+        pattern = {'*.go', 'go.mod', '*.lua', '*.rs', '*.zig'},
         callback = lsp_show_diagnostics,
     })
     vim.o.updatetime = 750
@@ -74,7 +74,18 @@ vim.lsp.config('rust_analyzer', {
     cmd = {'rust-analyzer'},
     on_init = lsp_on_attach,
 })
-vim.lsp.enable({'lua_ls', 'gopls', 'rust_analyzer'})
+
+vim.lsp.config('clangd', {
+    filetypes = {'c'},
+    cmd = {'clangd-20'},
+    on_init = lsp_on_attach,
+})
+vim.lsp.config('zls', {
+    filetypes = {'zig'},
+    cmd = {'zls'},
+    on_init = lsp_on_attach,
+})
+vim.lsp.enable({'lua_ls', 'gopls', 'rust_analyzer', 'clangd', 'zls'})
 
 require('blink.cmp').setup({
     keymap = {
@@ -139,15 +150,14 @@ vim.o.guicursor = ''
 vim.o.pumheight = 9
 vim.o.scrolloff = 10
 vim.o.laststatus = 3
-vim.o.background = 'light'
-vim.o.statusline = '%F%r %= %L lines %{&ff} %{&fenc}'
+vim.o.statusline = ' %F%r %= %L lines %{&ff} %{&fenc} '
 vim.o.clipboard = 'unnamedplus'
 vim.o.mouse = 'cv'
+vim.o.background = 'dark'
 vim.g.loaded_python3_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
-vim.g.colors_off_a_little = 1
 vim.g.mapleader = ' '
 vim.keymap.set('n', 'HN', '<cmd>Gitsigns next_hunk<CR><CR>')
 vim.keymap.set('n', 'HP', '<cmd>Gitsigns prev_hunk<CR><CR>')
@@ -160,7 +170,7 @@ vim.keymap.set('n', '<Leader>s', '<cmd>Telescope current_buffer_fuzzy_find<CR>')
 vim.keymap.set('n', '<Leader>f', '<cmd>Telescope find_files no_ignore=true hidden=true<CR>')
 vim.keymap.set('n', '<Leader>m', '<cmd>Telescope marks<CR>')
 vim.keymap.set('n', '<Leader>w', '<cmd>Telescope file_browser<CR>')
-vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics no_sign=true<CR>')
+vim.keymap.set('n', '<Leader>d', '<cmd>Telescope diagnostics<CR>')
 vim.keymap.set('n', '<Leader>y', '<cmd>Telescope lsp_document_symbols<CR>')
 vim.keymap.set('n', '<Leader>c', '<cmd>Telescope lsp_incoming_calls<CR>')
 vim.keymap.set('n', '<Leader>e', '<cmd>Telescope lsp_definitions<CR>')
@@ -170,6 +180,7 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
-vim.cmd.colorscheme('base16-one-light')
-vim.api.nvim_set_hl(0, 'SignColumn', {ctermbg = none})
+vim.cmd.colorscheme('atlas')
+vim.api.nvim_set_hl(0, 'LineNr', {ctermbg = none})
+vim.api.nvim_set_hl(0, 'StatusLine', {ctermbg = none})
 vim.lsp.set_log_level('OFF')
