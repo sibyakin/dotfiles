@@ -12,12 +12,12 @@ require('paq')({
     {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
     {'nvim-telescope/telescope-file-browser.nvim'},
     {'stevearc/dressing.nvim'},
-    {'huyvohcmc/atlas.vim'},
+    {'sainnhe/sonokai'},
 })
 
 require('nvim-treesitter').setup({
-    ensure_installed = {'go', 'gomod', 'json', 'rust'},
-    highlight = {enable = true},
+    ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua'},
+    highlight = {enable = 'true'},
 })
 
 require('auto-session').setup({})
@@ -180,7 +180,5 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
-vim.cmd.colorscheme('atlas')
-vim.api.nvim_set_hl(0, 'LineNr', {ctermbg = none})
-vim.api.nvim_set_hl(0, 'StatusLine', {ctermbg = none})
+vim.cmd.colorscheme('sonokai')
 vim.lsp.set_log_level('OFF')
