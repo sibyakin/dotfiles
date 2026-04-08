@@ -2,10 +2,10 @@ require('paq')({
     {'savq/paq-nvim'},
     {'nvim-lua/plenary.nvim'},
     {'nvim-tree/nvim-web-devicons'},
-    {'nvim-treesitter/nvim-treesitter', build = ':TSUpdate'},
+    {'nvim-treesitter/nvim-treesitter', branch = 'master', build = ':TSUpdate'},
     {'rmagatti/auto-session'},
     {'windwp/nvim-autopairs'},
-    {'saghen/blink.cmp'},
+    {'saghen/blink.cmp', branch = 'v1'},
     {'lewis6991/gitsigns.nvim'},
     {'nvim-mini/mini.notify'},
     {'nvim-telescope/telescope.nvim'},
@@ -16,7 +16,7 @@ require('paq')({
 })
 
 require('nvim-treesitter').setup({
-    ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua'},
+    ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua', 'zig'},
     highlight = {enable = 'true'},
 })
 
@@ -64,27 +64,10 @@ vim.lsp.config('lua_ls', {
         },
     },
 })
-vim.lsp.config('gopls', {
-    filetypes = {'go'},
-    cmd = {'gopls'},
-    on_init = lsp_on_attach,
-})
-vim.lsp.config('rust_analyzer', {
-    filetypes = {'rust'},
-    cmd = {'rust-analyzer'},
-    on_init = lsp_on_attach,
-})
-
-vim.lsp.config('clangd', {
-    filetypes = {'c'},
-    cmd = {'clangd-20'},
-    on_init = lsp_on_attach,
-})
-vim.lsp.config('zls', {
-    filetypes = {'zig'},
-    cmd = {'zls'},
-    on_init = lsp_on_attach,
-})
+vim.lsp.config('gopls', {filetypes = {'go'}, cmd = {'gopls'}, on_init = lsp_on_attach})
+vim.lsp.config('rust_analyzer', {filetypes = {'rust'}, cmd = {'rust-analyzer'}, on_init = lsp_on_attach})
+vim.lsp.config('clangd', {filetypes = {'c'}, cmd = {'clangd-20'}, on_init = lsp_on_attach})
+vim.lsp.config('zls', {filetypes = {'zig'}, cmd = {'zls'}, on_init = lsp_on_attach})
 vim.lsp.enable({'lua_ls', 'gopls', 'rust_analyzer', 'clangd', 'zls'})
 
 require('blink.cmp').setup({
