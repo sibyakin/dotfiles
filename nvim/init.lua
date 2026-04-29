@@ -1,5 +1,5 @@
 require('paq')({
-    {'savq/paq-nvim'},
+    --{'savq/paq-nvim'},
     {'nvim-lua/plenary.nvim'},
     {'nvim-tree/nvim-web-devicons'},
     {'nvim-treesitter/nvim-treesitter', branch = 'master', build = ':TSUpdate'},
