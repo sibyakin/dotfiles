@@ -1,18 +1,29 @@
-require('paq')({
-    --{'savq/paq-nvim'},
-    {'nvim-lua/plenary.nvim'},
-    {'nvim-tree/nvim-web-devicons'},
-    {'nvim-treesitter/nvim-treesitter', branch = 'master', build = ':TSUpdate'},
-    {'rmagatti/auto-session'},
-    {'windwp/nvim-autopairs'},
-    {'saghen/blink.cmp', branch = 'v1'},
-    {'lewis6991/gitsigns.nvim'},
-    {'nvim-mini/mini.notify'},
-    {'nvim-telescope/telescope.nvim'},
-    {'nvim-telescope/telescope-fzf-native.nvim', build = 'make'},
-    {'nvim-telescope/telescope-file-browser.nvim'},
-    {'stevearc/dressing.nvim'},
-    {'sainnhe/sonokai'},
+vim.api.nvim_create_autocmd('PackChanged', {callback = function(ev)
+    local name, kind = ev.data.spec.name, ev.data.kind
+    if name == 'nvim-treesitter' and (kind == 'install' or kind == 'update') then
+        if not ev.data.active then vim.cmd.packadd('nvim-treesitter') end
+        vim.cmd('TSUpdate')
+    end
+    if name == 'telescope-fzf-native.nvim' and (kind == 'install' or kind == 'update') then
+        vim.system({'make'}, {cwd = ev.data.path}):wait()
+    end
+end
+})
+
+vim.pack.add({
+    {src = 'https://github.com/nvim-lua/plenary.nvim'},
+    {src = 'https://github.com/nvim-tree/nvim-web-devicons'},
+    {src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'master'},
+    {src = 'https://github.com/rmagatti/auto-session'},
+    {src = 'https://github.com/windwp/nvim-autopairs'},
+    {src = 'https://github.com/saghen/blink.cmp', version = 'v1'},
+    {src = 'https://github.com/lewis6991/gitsigns.nvim'},
+    {src = 'https://github.com/nvim-mini/mini.notify'},
+    {src = 'https://github.com/nvim-telescope/telescope.nvim'},
+    {src = 'https://github.com/nvim-telescope/telescope-fzf-native.nvim'},
+    {src = 'https://github.com/nvim-telescope/telescope-file-browser.nvim'},
+    {src = 'https://github.com/stevearc/dressing.nvim'},
+    {src = 'https://github.com/mofiqul/vscode.nvim'},
 })
 
 require('nvim-treesitter').setup({
@@ -163,5 +174,5 @@ vim.keymap.set('n', '<Leader>i', '<cmd>Telescope lsp_implementations<CR>')
 vim.keymap.set('n', '<Leader>a', vim.lsp.buf.code_action)
 vim.keymap.set('n', '<Leader>n', vim.lsp.buf.rename)
 vim.keymap.set('i', '<C-s>', vim.lsp.buf.signature_help)
-vim.cmd.colorscheme('sonokai')
-vim.lsp.set_log_level('OFF')
+vim.cmd.colorscheme('vscode')
+vim.lsp.log.set_level('OFF')
