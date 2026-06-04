@@ -1,7 +1,7 @@
 vim.api.nvim_create_autocmd('PackChanged', {callback = function(ev)
     local name, kind = ev.data.spec.name, ev.data.kind
-    if name == 'nvim-treesitter' and (kind == 'install' or kind == 'update') then
-        if not ev.data.active then vim.cmd.packadd('nvim-treesitter') end
+    if name == 'nvim-treesitter-manager' and (kind == 'install' or kind == 'update') then
+        if not ev.data.active then vim.cmd.packadd('nvim-treesitter-manager') end
         vim.cmd('TSUpdate')
     end
     if name == 'telescope-fzf-native.nvim' and (kind == 'install' or kind == 'update') then
@@ -13,7 +13,7 @@ end
 vim.pack.add({
     {src = 'https://github.com/nvim-lua/plenary.nvim'},
     {src = 'https://github.com/nvim-tree/nvim-web-devicons'},
-    {src = 'https://github.com/nvim-treesitter/nvim-treesitter', version = 'master'},
+    {src = 'https://github.com/romus204/tree-sitter-manager.nvim'},
     {src = 'https://github.com/rmagatti/auto-session'},
     {src = 'https://github.com/windwp/nvim-autopairs'},
     {src = 'https://github.com/saghen/blink.cmp', version = 'v1'},
@@ -26,10 +26,7 @@ vim.pack.add({
     {src = 'https://github.com/mofiqul/vscode.nvim'},
 })
 
-require('nvim-treesitter').setup({
-    ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua', 'zig'},
-    highlight = {enable = 'true'},
-})
+require("tree-sitter-manager").setup({ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua', 'zig'}})
 
 require('auto-session').setup({})
 
