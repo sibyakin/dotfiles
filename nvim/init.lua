@@ -1,3 +1,7 @@
+vim.api.nvim_create_user_command('PackUpdate', function()
+    vim.pack.update(nil, {force = true})
+end, {})
+
 vim.api.nvim_create_autocmd('PackChanged', {callback = function(ev)
     local name, kind = ev.data.spec.name, ev.data.kind
     if name == 'telescope-fzf-native.nvim' and (kind == 'install' or kind == 'update') then
@@ -22,7 +26,7 @@ vim.pack.add({
     {src = 'https://github.com/mofiqul/vscode.nvim'},
 })
 
-require("tree-sitter-manager").setup({ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua', 'zig'}})
+require('tree-sitter-manager').setup({ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua', 'zig'}})
 
 require('auto-session').setup({})
 
