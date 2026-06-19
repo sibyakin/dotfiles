@@ -1,18 +1,18 @@
+[general]
 import = [
-    "~/.config/alacritty/themes/tender.toml"
+    "~/.config/alacritty/themes/themes/xterm.toml"
 ]
 
-[font]
-size = 16.5
-
-[font.normal]
-family = "Cousine Nerd Font"
-
 [window]
+dimensions = {columns = 150, lines = 48}
 #decorations = "None"
 #startup_mode = "Maximized"
 decorations_theme_variant = "Dark"
+padding = {x = 3, y = 3}
 
-[window.dimensions]
-columns = 152
-lines = 50
+[scrolling]
+history = 65000
+
+[font]
+normal = {family = "monospace", style = "Regular"}
+size = 14
