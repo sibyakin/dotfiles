@@ -26,7 +26,7 @@ vim.pack.add({
     {src = 'https://github.com/mofiqul/vscode.nvim'},
 })
 
-require('tree-sitter-manager').setup({ensure_installed = {'go', 'gomod', 'json', 'rust', 'lua', 'zig'}})
+require('tree-sitter-manager').setup({ensure_installed = {'go', 'gomod', 'json', 'rust', 'zig'}})
 
 require('auto-session').setup({})
 
